@@ -1,0 +1,67 @@
+// Attention matrix KL shift pipeline
+// Render: dot -Tpng pipeline.dot -o pipeline.png
+
+digraph pipeline_attn_kl {
+    rankdir=TB;
+    compound=true;
+    graph [fontname="Helvetica", bgcolor="white", nodesep=0.3, ranksep=0.45];
+    node [fontname="Helvetica", fontsize=11, shape=box, style="rounded,filled", margin="0.15,0.08"];
+    edge [fontname="Helvetica", fontsize=9, color="#555555"];
+
+    // ============ Inputs ============
+    subgraph cluster_input {
+        label=<<B>Inputs</B>>;
+        fontsize=12; color="#888888"; style="dashed";
+
+        base  [label="Base model\n(meta-llama/Llama-2-7b-hf)", shape=cylinder, fillcolor="#D1E8FF"];
+        ft    [label="6 FT models\n(llama2-7b-{task}-full)", shape=cylinder, fillcolor="#D1E8FF"];
+        prompts [label="50 task prompts per task\n(llama2 prompt format)", shape=folder, fillcolor="#D1E8FF"];
+    }
+
+    // ============ Step 1: extract attention patterns ============
+    subgraph cluster_extract {
+        label=<<B>Step 1 &nbsp; Extract attention patterns from both models</B>>;
+        fontsize=12; color="#4A90E2"; style="rounded";
+
+        fwd_base [label="Forward(base, prompt)\n+ cache 'pattern' hook\nfor every (layer, head)\n→ P_base[L, H, i, j]", fillcolor="#E8F4FD"];
+        fwd_ft   [label="Forward(FT, prompt)\n+ cache 'pattern' hook\nfor every (layer, head)\n→ P_ft[L, H, i, j]", fillcolor="#E8F4FD"];
+
+        note_shape [label="Pattern shape per sample:\n[n_layers=32, n_heads=32, seq, seq]\nEach (i,j) entry = P(attend i→j)", shape=note, fillcolor="#E8F4FD"];
+    }
+
+    base    -> fwd_base [lhead=cluster_extract];
+    ft      -> fwd_ft;
+    prompts -> fwd_base;
+    prompts -> fwd_ft;
+
+    // ============ Step 2: compute KL per head ============
+    subgraph cluster_kl {
+        label=<<B>Step 2 &nbsp; KL divergence per head per sample</B>>;
+        fontsize=12; color="#F5A623"; style="rounded";
+
+        formula [label="For each layer L, head H, sample s:\n  p = P_base[L, H, :, :] + ε\n  q = P_ft[L, H, :, :] + ε\n  p, q normalized per row\n  KL = sum_j p_ij × log(p_ij / q_ij)\n  → scalar per row i, then mean over i", fillcolor="#FFF3E0"];
+
+        agg [label="Average over 50 samples\n→ single KL value per (L, H)", fillcolor="#FFF3E0"];
+
+        formula -> agg;
+    }
+
+    fwd_base -> formula [ltail=cluster_extract, lhead=cluster_kl];
+    fwd_ft   -> formula;
+
+    // ============ Step 3: save + visualize ============
+    subgraph cluster_out {
+        label=<<B>Outputs &nbsp; experiments/attention_matrix_analysis/</B>>;
+        fontsize=12; color="#888888"; style="dashed";
+
+        matrix [label="attention_analysis_results/\nllama2_full_ft/{task}/\n  kl_divergence_heads.csv   (32×32)\n  kl_divergence_heads.npy", shape=note, fillcolor="#FFFDE7"];
+
+        heatmap [label="figures/llama2_full_ft/{task}/\nheatmap_head_kl.pdf/png\n(grid visualisation)", shape=note, fillcolor="#FFFDE7"];
+
+        barplot [label="figures/llama2_full_ft/{task}/\nbarplot_layer_kl.pdf/png\n(per-layer mean)", shape=note, fillcolor="#FFFDE7"];
+    }
+
+    agg -> matrix  [style=dashed];
+    matrix -> heatmap [style=dashed, label="kl_visualize_heatmap.py"];
+    matrix -> barplot [style=dashed, label="kl_visualize_heatmap.py"];
+}

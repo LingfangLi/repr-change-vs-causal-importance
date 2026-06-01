@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# IDE
+.idea/
+.vscode/
+
+# SLURM / training logs
+*.out
+*.err
+slurm-*.out
+*.log
+
+# Model + intermediate outputs
+*.pt
+*.pth
+*.ckpt
+*.bin
+*.safetensors
+*.pkl
+*.npy
+*.npz
+wandb/
+
+# Result dumps
+output/
+**/results/
+**/Results/
+**/figures/
+**/figure/
+**/results_*/
