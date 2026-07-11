@@ -36,7 +36,7 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 PROJECT = Path("<PROJECT_ROOT>")
-CK_ROOT = Path("<MODEL_DIR>")
+CK_ROOT = Path("<DATA_ROOT>")
 DATA_DIR = PROJECT / "output/corrupted_data"
 OUT_DIR = PROJECT / "experiments/cka_representation_change/results"
 
@@ -64,7 +64,7 @@ DTYPE = {"gpt2": torch.float32, "llama2": torch.bfloat16}  # others fp32
 # All six are no-adapter full-FT LlamaForCausalLM (32 layers). yelp uses the
 # Apr-16 retrain (avoid the *-BAD-was-squad copy). base is loaded offline from
 # the scratch HF cache (see HF_HOME in the runner).
-_L2 = "<LLAMA2_MODEL_DIR>"
+_L2 = "<DATA_ROOT>"
 LLAMA2_FT_REPO = {
     "sst2":    f"{_L2}/llama2-7b-sst2-full",
     "coqa":    f"{_L2}/llama2-7b-coqa-full",

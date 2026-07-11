@@ -29,8 +29,8 @@ class of measure the reviewer named.
 ## Method / parameters
 
 - **Pipeline B only** (full-FT vs the matching HF base). Never mixes with QLoRA.
-  gpt2/qwen2/llama3.2 from `<MODEL_DIR>/{model}-{task}`;
-  **llama2 from `<LLAMA2_MODEL_DIR>/llama2-7b-{task}-full`**
+  gpt2/qwen2/llama3.2 from `<DATA_ROOT>/{model}-{task}`;
+  **llama2 from `<DATA_ROOT>/llama2-7b-{task}-full`**
   (the only local full-FT llama2 — the data1 path has QLoRA adapters for llama2).
   base llama2 loaded offline from the scratch HF cache. See [[reference_llama2_fullft_location]].
 - **Inputs**: the `clean` column of the 50-example EAP/RelP eval CSVs
@@ -119,8 +119,8 @@ causal importance is distributed differently. See
 - `plot_cka_perlayer.py` — **pure per-layer CKA figures** (1−CKA vs layer, one
   subplot per task; token-level + last-token), plus a 4-model normalised-depth
   summary. Run `python plot_cka_perlayer.py`.
-- `submit_llama2_paramchange.sbatch` — slurm job for the llama2 ‖ΔW‖ (highmem,
-  loads two 7B state dicts; base offline from scratch cache).
+  (Computing ‖ΔW‖ for Llama-2-7B loads two 7B state dicts and needs a
+  high-memory node.)
 - `results/{model}/{model}_{task}_cka.csv` — per-layer CKA/change + attn_kl + EAP.
 - `results/{model}/{model}_{task}_paramchange.csv` — per-layer ‖ΔW‖ + attn_kl + EAP.
 - `results/cka_correlation_summary.csv` — combined Pearson table (CKA + param).
@@ -131,7 +131,7 @@ causal importance is distributed differently. See
 ## Status
 
 All four models done (full-FT, Pipeline B). llama2 full-FT was located at
-`<LLAMA2_MODEL_DIR>/llama2-7b-{task}-full`
+`<DATA_ROOT>/llama2-7b-{task}-full`
 (NOT the data1 path, which only has llama2 QLoRA adapters); its ‖ΔW‖ ran as slurm
 job on the highmem partition. The `Lili85/dni-*` HF models are a *different*
 project (data-noise-influence) and are not used here.

@@ -34,7 +34,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 PROJ = Path("<PROJECT_ROOT>")
 DATA_DIR = PROJ / "output/corrupted_data"
 OUT_DIR = PROJ / "experiments/corruption_semantic_check/results"
-_R = "<LLAMA2_MODEL_DIR>"
+_R = "<DATA_ROOT>"
 # multiple discriminators as PROBES to cross-validate the corruption quality
 # (result is a property of the shared data, not of any one model).
 DISC = {

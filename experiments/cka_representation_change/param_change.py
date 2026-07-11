@@ -27,9 +27,9 @@ import torch
 from transformers import AutoModelForCausalLM
 
 PROJECT = Path("<PROJECT_ROOT>")
-CK_ROOT = Path("<MODEL_DIR>")
+CK_ROOT = Path("<DATA_ROOT>")
 # llama2 full-FT (Pipeline B) lives on scratch, not under fine-tuning-project-1.
-_L2 = "<LLAMA2_MODEL_DIR>"
+_L2 = "<DATA_ROOT>"
 LLAMA2_FT_REPO = {
     "sst2":    f"{_L2}/llama2-7b-sst2-full",
     "coqa":    f"{_L2}/llama2-7b-coqa-full",

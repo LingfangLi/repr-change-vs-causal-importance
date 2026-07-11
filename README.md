@@ -34,6 +34,11 @@ experiments/
                                                 probing, BERTScore probes
   text_complexity/                          Lexical-complexity controlled
                                             fine-tuning (simple/complex splits)
+  cka_representation_change/                Linear CKA + parameter-change norm
+                                            per layer vs. EAP causal importance
+  corruption_semantic_check/                Validity of the selected sentiment
+                                            words (lexicon precision, mask
+                                            effectiveness, selection bias)
 ```
 
 ## Paper section → code mapping
@@ -53,6 +58,8 @@ experiments/
 | Appendix (induction-head) | `experiments/induction_head/` |
 | Appendix (lexical complexity / FT) | `experiments/text_complexity/` |
 | Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
+| Appendix (representational change vs. causal importance) | `experiments/cka_representation_change/` |
+| Appendix (sentiment-word selection validity) | `experiments/corruption_semantic_check/` |
 
 Each top-level analysis directory has a `pipeline.md` explaining its
 methodology in plain language.
@@ -83,6 +90,7 @@ own paths before running:
 | `<HOME>` | Your user home directory |
 | `<DATA_ROOT>` | Directory where fine-tuned checkpoints and intermediate edge CSVs live |
 | `<CONDA_ENV>` | Path to the Python environment used to run experiments |
+| `<LEXICON_DIR>` | Directory holding the sentiment lexicon files (`vader_lexicon.txt`, `hl_pos.txt`, `hl_neg.txt`) used by `corruption_semantic_check/lexicon_precision.py` |
 
 The `<DATA_ROOT>` location holds two things:
 1. Fine-tuned model directories (one per `(model, task)` pair) produced by

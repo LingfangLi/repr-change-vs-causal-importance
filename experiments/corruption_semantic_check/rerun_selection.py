@@ -28,7 +28,7 @@ N = int(sys.argv[2]) if len(sys.argv) > 2 else 150
 SEED = 42
 random.seed(SEED)
 
-R = "<LLAMA2_MODEL_DIR>"
+R = "<DATA_ROOT>"
 DISC = {"sst2": f"{R}/gpt2-sst2-full-ft-20251205-172809",
         "yelp": f"{R}/gpt2-small-yelp-full-ft-20260415-232443"}[TASK]
 DATASET = {"sst2": ("stanfordnlp/sst2", "validation", "sentence"),
