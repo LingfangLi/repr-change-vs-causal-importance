@@ -1,7 +1,7 @@
-# Understanding Fine-tuning Via Mechanistic Interpretability — Code
+# Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models — Code
 
 Anonymous code release for the paper
-**"Understanding Fine-tuning Via Mechanistic Interpretability"**.
+**"Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models"**.
 
 This repository contains the code used to fine-tune four LLMs on six tasks
 and to analyse fine-tuning-induced internal changes via mechanistic
