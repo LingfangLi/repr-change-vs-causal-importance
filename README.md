@@ -3,11 +3,15 @@
 Anonymous code release for the paper
 **"Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models"**.
 
-This repository contains the code used to fine-tune four LLMs on six tasks
-and to analyse fine-tuning-induced internal changes via mechanistic
-interpretability tools (attention KL, layer-wise probing, Edge Attribution
-Patching, induction-head detection, component-type distribution, cross-task
-transfer).
+This repository contains the code for our study of how fine-tuning reshapes
+decoder-only LLMs along two distinct axes — the **internal representational
+change** a model undergoes and the **causal importance** of its components for
+task performance — and shows that the two are largely decoupled: the layers
+that change the most are not the ones that matter most causally. We fine-tune
+four LLMs on six tasks and quantify representational change (attention-pattern
+KL, layer-wise probing, linear CKA, parameter-change norm) against causal
+importance obtained via Edge Attribution Patching, and further analyse
+induction-head reuse, component-type distribution, and cross-task transfer.
 
 ## Repository layout
 
@@ -32,8 +36,6 @@ experiments/
                                             ablation analysis
   Layerwise_Representation_Distance_Analysis/  PCA distance, logit-lens
                                                 probing, BERTScore probes
-  text_complexity/                          Lexical-complexity controlled
-                                            fine-tuning (simple/complex splits)
   cka_representation_change/                Linear CKA + parameter-change norm
                                             per layer vs. EAP causal importance
   corruption_semantic_check/                Validity of the selected sentiment
@@ -56,7 +58,6 @@ experiments/
 | Appendix (faithfulness of top-K) | `src/EAP/generate_with_edge_corruption/` |
 | Appendix (component pies) | `experiments/component_distribution/` |
 | Appendix (induction-head) | `experiments/induction_head/` |
-| Appendix (lexical complexity / FT) | `experiments/text_complexity/` |
 | Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
 | Appendix (representational change vs. causal importance) | `experiments/cka_representation_change/` |
 | Appendix (sentiment-word selection validity) | `experiments/corruption_semantic_check/` |
