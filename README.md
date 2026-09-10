@@ -9,7 +9,7 @@ change** a model undergoes and the **causal importance** of its components for
 task performance — and shows that the two are largely decoupled: the layers
 that change the most are not the ones that matter most causally. We fine-tune
 four LLMs on six tasks and quantify representational change (attention-pattern
-KL, layer-wise probing, linear CKA, parameter-change norm) against causal
+KL, layer-wise probing) against causal
 importance obtained via Edge Attribution Patching, and further analyse
 induction-head reuse, component-type distribution, and cross-task transfer.
 
@@ -36,11 +36,6 @@ experiments/
                                             ablation analysis
   Layerwise_Representation_Distance_Analysis/  PCA distance, logit-lens
                                                 probing, BERTScore probes
-  cka_representation_change/                Linear CKA + parameter-change norm
-                                            per layer vs. EAP causal importance
-  corruption_semantic_check/                Validity of the selected sentiment
-                                            words (lexicon precision, mask
-                                            effectiveness, selection bias)
 ```
 
 ## Paper section → code mapping
@@ -59,8 +54,6 @@ experiments/
 | Appendix (component pies) | `experiments/component_distribution/` |
 | Appendix (induction-head) | `experiments/induction_head/` |
 | Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
-| Appendix (representational change vs. causal importance) | `experiments/cka_representation_change/` |
-| Appendix (sentiment-word selection validity) | `experiments/corruption_semantic_check/` |
 
 Each top-level analysis directory has a `pipeline.md` explaining its
 methodology in plain language.
@@ -91,7 +84,6 @@ own paths before running:
 | `<HOME>` | Your user home directory |
 | `<DATA_ROOT>` | Directory where fine-tuned checkpoints and intermediate edge CSVs live |
 | `<CONDA_ENV>` | Path to the Python environment used to run experiments |
-| `<LEXICON_DIR>` | Directory holding the sentiment lexicon files (`vader_lexicon.txt`, `hl_pos.txt`, `hl_neg.txt`) used by `corruption_semantic_check/lexicon_precision.py` |
 
 The `<DATA_ROOT>` location holds two things:
 1. Fine-tuned model directories (one per `(model, task)` pair) produced by
