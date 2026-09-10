@@ -92,6 +92,8 @@ def main() -> None:
                     help="Take top-K edges by |score| before summing per layer")
     ap.add_argument("--n-layers", type=int, default=12,
                     help="Model depth (GPT-2 Small = 12)")
+    ap.add_argument("--model-prefix", type=str, default="gpt2",
+                    help="Filename prefix for EAP CSVs and output CSVs")
     args = ap.parse_args()
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
@@ -106,7 +108,7 @@ def main() -> None:
         if kl_col not in kl_df.columns:
             print(f"[skip] {task}: KL column '{kl_col}' not in {args.kl_csv.name}")
             continue
-        edges_csv = args.eap_dir / f"gpt2_{task}_finetuned_edges.csv"
+        edges_csv = args.eap_dir / f"{args.model_prefix}_{task}_finetuned_edges.csv"
         if not edges_csv.exists():
             print(f"[skip] {task}: {edges_csv.name} missing")
             continue
@@ -118,9 +120,13 @@ def main() -> None:
             top_k=args.top_k,
             n_layers=args.n_layers,
         )
-        out_path = args.out_dir / f"gpt2_{task}_layer_kl_vs_eap.csv"
+        out_path = args.out_dir / f"{args.model_prefix}_{task}_layer_kl_vs_eap.csv"
         out_df.to_csv(out_path, index=False, float_format="%.6g")
-        print(f"[wrote] {out_path.relative_to(PROJECT_ROOT)}")
+        try:
+            shown = out_path.resolve().relative_to(PROJECT_ROOT)
+        except ValueError:
+            shown = out_path
+        print(f"[wrote] {shown}")
         print(out_df.to_string(index=False))
         print()
 

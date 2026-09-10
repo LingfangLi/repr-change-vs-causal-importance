@@ -27,10 +27,9 @@ src/
   find_corrupt_data/              Corrupted-dataset generation (counter-examples)
 
 experiments/
-  attention_matrix_analysis/                Per-layer attention-KL between
-                                            base vs fine-tuned models
-  attenion_change_eap_score_correlation/    Pearson correlation between
-                                            attention-KL and EAP score
+  attention_matrix_analysis/                Per-layer attention-KL (base vs
+                                            fine-tuned) joined with per-layer
+                                            EAP score (Figure 2)
   induction_head/                           Induction-head detection +
                                             ablation analysis
   layerwise_probing/                        Per-layer logit-lens probing
@@ -45,7 +44,7 @@ experiments/
 | Methodology §2.1 (layer-wise probing) | `experiments/layerwise_probing/` |
 | Methodology §2.2 (EAP) | `src/EAP/` |
 | Experiment setup §4 (fine-tuning) | `src/Fine_tune/{Sentiment_classification,Question_answering,Machine_translation}/` |
-| Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attenion_change_eap_score_correlation/build_layer_kl_vs_eap.py` |
+| Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attention_matrix_analysis/build_layer_kl_vs_eap.py` |
 | Results §5.1 (logit lens) | `experiments/layerwise_probing/logit_lens_analysis.py` |
 | Results §5.2 (localisation) | `src/EAP/` + `experiments/attention_matrix_analysis/` |
 | Results §5.3 (cross-task transfer) | `src/Fine_tune/cross_eval/` |
