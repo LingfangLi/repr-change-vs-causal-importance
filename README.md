@@ -1,7 +1,8 @@
 # Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models — Code
 
-Anonymous code release for the paper
-**"Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models"**.
+Code for the paper
+**"Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models"**,
+accepted to **AACL-IJCNLP 2026** (main conference).
 
 This repository contains the code for our study of how fine-tuning reshapes
 decoder-only LLMs along two distinct axes — the **internal representational
@@ -113,4 +114,5 @@ scripts in dependency order.
 
 ## License
 
-Released for anonymous review. License will be added on de-anonymisation.
+Released as the code accompanying our AACL-IJCNLP 2026 paper. A license file
+will be added; until one is present, please contact the authors regarding reuse.
