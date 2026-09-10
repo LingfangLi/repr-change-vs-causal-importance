@@ -116,11 +116,15 @@ class ModelLoader:
 
 # User Configuration
 class UserConfig:
-    TARGET_MODEL =  ["llama2"]#["gpt2", "llama3","qwen2","llama2"]
+    # gpt2/llama3.2/qwen2 full-FT induction detection. Llama-2-7B full-FT lives
+    # in a different location/naming and is handled by
+    # detect_induction_head_llama2_full.py.
+    TARGET_MODEL = ["gpt2", "llama3", "qwen2"]
     USE_FINETUNED = True
-    TARGET_TASK = ['sentiment_sst2-fix']#['sentiment_yelp','sentiment_sst2','qa_squad', 'qa_coqa','mt_kde4','mt_tatoeba']
+    TARGET_TASK = ['sentiment_yelp', 'sentiment_sst2', 'qa_squad', 'qa_coqa', 'mt_kde4', 'mt_tatoeba']
 
-    MODEL_ROOT_DIR = r"<MODEL_STORAGE>/fine-tuning-project-1/old_version_finetuned_models/" #"<MODEL_STORAGE>/fine-tuning-project-1/fine_tuned_models/"
+    # Full fine-tuned checkpoints (the paper's models), one dir per (model, task).
+    MODEL_ROOT_DIR = r"<MODEL_STORAGE>/fine-tuning-project-1/fine_tuned_models/"
     OUTPUT_DIR = r"<PROJECT_ROOT>/experiments/induction_head/output/"
 
     FT_MODEL_MAP = {
