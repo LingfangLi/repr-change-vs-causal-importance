@@ -20,7 +20,7 @@ class ModelLoader:
     def load(model_key: str, is_finetuned: bool, task_name: str) -> HookedTransformer:
         device = UserConfig.DEVICE
 
-        use_bf16 = (model_key == "llama2" and task_name == "mt_kde4" and
+        use_bf16 = (model_key == "llama2" and
                     torch.cuda.is_available() and torch.cuda.is_bf16_supported())
         dtype = torch.bfloat16 if use_bf16 else (torch.float16 if "llama" in model_key else torch.float32)
 
@@ -40,7 +40,8 @@ class ModelLoader:
             if not folder_name:
                 raise ValueError(f"Config Error: No folder name for {model_key} on {task_name}")
 
-            full_path = os.path.join(UserConfig.MODEL_ROOT_DIR, folder_name)
+            root = UserConfig.MODEL_ROOT_OVERRIDE.get(model_key, UserConfig.MODEL_ROOT_DIR)
+            full_path = os.path.join(root, folder_name)
 
             if not os.path.exists(full_path):
                 logging.error(f"Path NOT FOUND: {full_path}")
@@ -116,15 +117,20 @@ class ModelLoader:
 
 # User Configuration
 class UserConfig:
-    # gpt2/llama3.2/qwen2 full-FT induction detection. Llama-2-7B full-FT lives
-    # in a different location/naming and is handled by
-    # detect_induction_head_llama2_full.py.
-    TARGET_MODEL = ["gpt2", "llama3", "qwen2"]
+    # Full-FT induction detection for all four models. Llama-2-7B full-FT lives
+    # in a different location and uses a different dir naming
+    # (llama2-7b-<task>-full), so it is picked up via MODEL_ROOT_OVERRIDE below.
+    TARGET_MODEL = ["gpt2", "llama3", "qwen2", "llama2"]
     USE_FINETUNED = True
     TARGET_TASK = ['sentiment_yelp', 'sentiment_sst2', 'qa_squad', 'qa_coqa', 'mt_kde4', 'mt_tatoeba']
 
     # Full fine-tuned checkpoints (the paper's models), one dir per (model, task).
     MODEL_ROOT_DIR = r"<MODEL_STORAGE>/fine-tuning-project-1/fine_tuned_models/"
+    # Per-model checkpoint-root overrides (default: MODEL_ROOT_DIR).
+    # Llama-2-7B full-FT checkpoints live on separate storage.
+    MODEL_ROOT_OVERRIDE = {
+        "llama2": r"<DATA_ROOT>/fine_tuned_model",
+    }
     OUTPUT_DIR = r"<PROJECT_ROOT>/experiments/induction_head/output/"
 
     FT_MODEL_MAP = {
@@ -145,12 +151,12 @@ class UserConfig:
             "mt_tatoeba":     "llama3.2-tatoeba"
         },
         "llama2": {
-            "sentiment_yelp": "llama2-yelp",
-            "sentiment_sst2-fix": "llama2-sst2-fix",
-            "qa_squad":       "llama2-squad",
-            "qa_coqa":        "llama2-coqa",
-            "mt_kde4":        "llama2-kde4",
-            "mt_tatoeba":     "llama2-tatoeba",
+            "sentiment_yelp": "llama2-7b-yelp-full",
+            "sentiment_sst2": "llama2-7b-sst2-full",
+            "qa_squad":       "llama2-7b-squad-full",
+            "qa_coqa":        "llama2-7b-coqa-full",
+            "mt_kde4":        "llama2-7b-kde4-full",
+            "mt_tatoeba":     "llama2-7b-tatoeba-full",
         },
         "qwen2": {
             "sentiment_yelp": "qwen2-yelp",
