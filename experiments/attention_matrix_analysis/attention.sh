@@ -39,10 +39,13 @@ hostname
 export CUDA_LAUNCH_BLOCKING=1
 
 PROJECT_ROOT=<PROJECT_ROOT>
+# GPU step: per-head attention KL (base vs FT). The 3 downstream steps are CPU-only.
 python ${PROJECT_ROOT}/experiments/attention_matrix_analysis/measure_attention_kl.py
-# Figure-2 downstream (run after the top-400 EAP edge CSVs from src/EAP/ exist):
+# Figure-2 downstream (CPU; build_layer_kl_vs_eap also needs the top-400 EAP edge CSVs from src/EAP/):
+#   python ${PROJECT_ROOT}/experiments/attention_matrix_analysis/build_layer_kl_summary.py \
+#       --model-dir <attention_analysis_results/<model>>                  # -> <model>_layer_wise_summary.csv
 #   python ${PROJECT_ROOT}/experiments/attention_matrix_analysis/build_layer_kl_vs_eap.py \
-#       --model-prefix <model> --kl-csv <attn_kl.csv> --eap-dir <edges_dir> --out-dir <layer_csv_dir>
+#       --model-prefix <model> --kl-csv <model>_layer_wise_summary.csv --eap-dir <edges_dir> --out-dir <layer_csv_dir>
 #   python ${PROJECT_ROOT}/experiments/attention_matrix_analysis/compute_layer_entropy.py \
 #       --layer-csv-dir <layer_csv_dir>
 echo --------------- 
