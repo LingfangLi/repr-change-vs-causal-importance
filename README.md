@@ -24,7 +24,6 @@ src/
     Machine_translation/          KDE4, Tatoeba full-FT scripts
     cross_eval/                   Cross-task performance matrix
   EAP/                            Edge Attribution Patching pipeline
-    generate_with_edge_corruption/  Generation + ablation evaluation
   find_corrupt_data/              Corrupted-dataset generation (counter-examples)
 
 experiments/
@@ -50,7 +49,6 @@ experiments/
 | Results §5.1 (logit lens) | `experiments/Layerwise_Representation_Distance_Analysis/logit_lens_analysis.py` |
 | Results §5.2 (localisation) | `src/EAP/` + `experiments/attention_matrix_analysis/` |
 | Results §5.3 (cross-task transfer) | `src/Fine_tune/cross_eval/` |
-| Appendix (faithfulness of top-K) | `src/EAP/generate_with_edge_corruption/` |
 | Appendix (induction-head) | `experiments/induction_head/` |
 | Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
 
