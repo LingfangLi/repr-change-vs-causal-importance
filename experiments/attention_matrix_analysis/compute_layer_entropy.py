@@ -1,24 +1,11 @@
-"""Normalised layer-wise entropy (Appendix E) for the Figure-2 quantities.
+"""Normalised layer-wise entropy (Appendix E): H = -sum p_l log p_l / log(L).
 
-For each (model, task) this computes the two entropies annotated in Figure 2:
+Computed over real layers (logits excluded) for two per-layer distributions in
+the <model>_<task>_layer_kl_vs_eap.csv files: attention_kl (H_attn) and
+eap_abs_score_sum (H_EAP). Lower H_EAP means causal importance is more
+localised across layers.
 
-    H~ = -sum_l p_l log p_l / log(L)          (logits layer excluded)
-
-where L is the number of real transformer layers and p_l is the layer-l share of:
-  * H~attn : the attention-pattern KL(base||FT) mass  -> column `attention_kl`
-  * H~EAP  : the top-400 EAP |score| mass landing on layer l -> column
-             `eap_abs_score_sum`
-
-Both columns already live in the per-layer CSVs written by
-`build_layer_kl_vs_eap.py` (`<model>_<task>_layer_kl_vs_eap.csv`), so nothing is
-recomputed on-GPU here -- this is the pure entropy reduction, with no plotting.
-A consistently lower H~EAP than H~attn means causal importance is more localised
-across layers than the representational (attention) change. (Reproduces the
-paper's GPT-2 EAP value ~0.9805.)
-
-Run:
-    python compute_layer_entropy.py --layer-csv-dir <dir of *_layer_kl_vs_eap.csv> \
-                                    [--out layer_entropy_summary.csv]
+    python compute_layer_entropy.py --layer-csv-dir <dir>
 """
 from __future__ import annotations
 

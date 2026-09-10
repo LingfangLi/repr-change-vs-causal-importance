@@ -51,8 +51,6 @@ experiments/
 | Appendix (induction-head) | `experiments/induction_head/` |
 | Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
 
-Each top-level analysis directory has a `pipeline.md` explaining its
-methodology in plain language.
 
 ## Models and tasks
 
@@ -89,16 +87,12 @@ The `<DATA_ROOT>` location holds two things:
 
 ## Quick start
 
-1. Set up a Python environment (see `experiments/*/pipeline.md` for the
-   exact library versions used in each module).
+1. Set up a Python environment.
 2. Fine-tune your models with the scripts under `src/Fine_tune/`.
 3. Run EAP to compute the edge attribution CSVs.
 4. Use the analyses under `experiments/` to reproduce the paper's
    quantitative results. (Figure-plotting scripts are not included in this
    release; each analysis writes the underlying metrics to CSV/JSON.)
-
-`pipeline.md` in each analysis directory walks through the corresponding
-scripts in dependency order.
 
 ## Notes
 

@@ -1,20 +1,10 @@
-"""Aggregate the per-head attention-KL into a per-layer, tasks-as-columns table.
+"""Reduce per-head attention KL to a per-layer, tasks-as-columns summary.
 
-`measure_attention_kl.py` writes one head-level matrix per (model, task):
-    attention_analysis_results/<model>/<task>/kl_divergence_heads.csv
-        rows = Layer, columns = Head_0..Head_{H-1}
+Averages each <task>/kl_divergence_heads.csv (from measure_attention_kl.py)
+over heads and writes <model>_layer_wise_summary.csv, the --kl-csv that
+build_layer_kl_vs_eap.py reads.
 
-This reduces each task's matrix to a per-layer mean over heads and stitches the
-tasks together into the single summary CSV that `build_layer_kl_vs_eap.py`
-consumes (its `--kl-csv`):
-    attention_analysis_results/<model>/<model>_layer_wise_summary.csv
-        index = layer, columns = task names (e.g. mt_kde4, qa_squad, ...)
-
-Pure reduction -- no model loading, no plotting. (This is the compute half of
-the former kl_visualize_heatmap.py; the plotting half was dropped.)
-
-Run:
-    python build_layer_kl_summary.py --model-dir <attention_analysis_results/<model>>
+    python build_layer_kl_summary.py --model-dir attention_analysis_results/<model>
 """
 from __future__ import annotations
 

@@ -177,4 +177,3 @@ All in `attention_analysis_results/figures/`:
 | Per-head KL -> per-layer summary | `build_layer_kl_summary.py` |
 | Per-layer KL + EAP-score join (Figure 2) | `build_layer_kl_vs_eap.py` |
 | Normalised layer-wise entropy H̃attn, H̃EAP (Appendix E) | `compute_layer_entropy.py` |
-| SLURM wrapper | `attention.sh` |
