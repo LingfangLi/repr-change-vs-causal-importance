@@ -84,6 +84,6 @@ Concrete cost: per task + model, EAP is one clean forward + one corrupted forwar
 | Script / Output | Location |
 |---|---|
 | Core attribution + output writer | `src/EAP/eap_unified.py` |
-| SLURM wrappers (same-task loop over tasks) | `src/EAP/eap-iterate.sh`, `llama-eap.sh` |
-| Cross-task runner (same A, loop over B) | `src/EAP/run_llama2_same_task_top2000.sh` (for top-2000) and older `cross_task_llama2_full_*.out` logs |
+| SLURM wrappers (per-model, all edges) | `src/EAP/run_{gpt2,qwen2,llama3}_all_edges.sh` |
+| Cross-task runner (same A, loop over B) | `src/EAP/run_llama2_same_task_top2000.sh` (for top-2000) |
 | Edge CSVs | `output/EAP_edges/{finetuned,pretrained,cross_task_edges,finetuned_top2000,overlap}/` |
