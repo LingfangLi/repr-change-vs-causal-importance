@@ -174,6 +174,4 @@ All in `attention_analysis_results/figures/`:
 | Script / Output | Location |
 |---|---|
 | Measurement | `measure_attention_kl.py` |
-| Visualization (5-panel heatmaps + line plots) | `kl_visulize_heatmap_all.py` |
-| Per-model visualization (optional) | `kl_visualize_heatmap.py` |
 | SLURM wrapper | `attention.sh` |

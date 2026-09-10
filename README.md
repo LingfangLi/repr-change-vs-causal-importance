@@ -12,7 +12,7 @@ that change the most are not the ones that matter most causally. We fine-tune
 four LLMs on six tasks and quantify representational change (attention-pattern
 KL, layer-wise probing) against causal
 importance obtained via Edge Attribution Patching, and further analyse
-induction-head reuse, component-type distribution, and cross-task transfer.
+induction-head reuse and cross-task transfer.
 
 ## Repository layout
 
@@ -32,7 +32,6 @@ experiments/
                                             base vs fine-tuned models
   attenion_change_eap_score_correlation/    Pearson correlation between
                                             attention-KL and EAP score
-  component_distribution/                   Top-K edge component-type pies
   induction_head/                           Induction-head detection +
                                             ablation analysis
   Layerwise_Representation_Distance_Analysis/  PCA distance, logit-lens
@@ -47,12 +46,11 @@ experiments/
 | Methodology §2.1 (layer-wise reps) | `experiments/Layerwise_Representation_Distance_Analysis/` |
 | Methodology §2.2 (EAP) | `src/EAP/` |
 | Experiment setup §4 (fine-tuning) | `src/Fine_tune/{Sentiment_classification,Question_answering,Machine_translation}/` |
-| Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attenion_change_eap_score_correlation/correlogram.py` |
+| Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attenion_change_eap_score_correlation/build_layer_kl_vs_eap.py` |
 | Results §5.1 (logit lens) | `experiments/Layerwise_Representation_Distance_Analysis/logit_lens_analysis.py` |
 | Results §5.2 (localisation) | `src/EAP/` + `experiments/attention_matrix_analysis/` |
 | Results §5.3 (cross-task transfer) | `src/Fine_tune/cross_eval/` |
 | Appendix (faithfulness of top-K) | `src/EAP/generate_with_edge_corruption/` |
-| Appendix (component pies) | `experiments/component_distribution/` |
 | Appendix (induction-head) | `experiments/induction_head/` |
 | Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
 
@@ -98,7 +96,9 @@ The `<DATA_ROOT>` location holds two things:
    exact library versions used in each module).
 2. Fine-tune your models with the scripts under `src/Fine_tune/`.
 3. Run EAP to compute the edge attribution CSVs.
-4. Use the analyses under `experiments/` to reproduce paper figures.
+4. Use the analyses under `experiments/` to reproduce the paper's
+   quantitative results. (Figure-plotting scripts are not included in this
+   release; each analysis writes the underlying metrics to CSV/JSON.)
 
 `pipeline.md` in each analysis directory walks through the corresponding
 scripts in dependency order.

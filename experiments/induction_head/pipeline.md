@@ -78,7 +78,6 @@ Repeat at K ∈ {1000, 2000, 5000} to check whether induction heads are just hid
 
 | Stage | Script | Output |
 |---|---|---|
-| 1 + 2 | `detect_induction_head_llama2_full.py` | `output/llama2/induction_scores_*.npy`, `detected_heads_*.json`, `heatmap_*.png`, `analysis_*.png` |
-| Optional sanity | `check_k_value_of_induction_head.py` | `induction_heads_distribution_plots/*.png` |
-| 3 (main) | `overlap_analysis.py` | `output/induction_overlap_stats_edges400.csv`, `output/llama2/scatter_*.{png,pdf}` |
+| 1 + 2 | `detect_induction_head_llama2_full.py` | `output/llama2/induction_scores_*.npy`, `detected_heads_*.json` |
+| 3 (main) | `overlap_analysis.py` | `output/induction_overlap_stats_edges400.csv` |
 | 3 (top-K sweep) | `overlap_analysis.py` (loop over K) | `output/induction_overlap_topK_sweep.csv` |
