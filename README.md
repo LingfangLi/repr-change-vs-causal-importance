@@ -33,8 +33,8 @@ experiments/
                                             attention-KL and EAP score
   induction_head/                           Induction-head detection +
                                             ablation analysis
-  Layerwise_Representation_Distance_Analysis/  PCA distance, logit-lens
-                                                probing, BERTScore probes
+  layerwise_probing/                        Per-layer logit-lens probing
+                                            (task metric recoverable per layer)
 ```
 
 ## Paper section → code mapping
@@ -42,11 +42,11 @@ experiments/
 | Paper section | Code |
 |---|---|
 | Methodology §2.1 (attention pattern KL) | `experiments/attention_matrix_analysis/` |
-| Methodology §2.1 (layer-wise reps) | `experiments/Layerwise_Representation_Distance_Analysis/` |
+| Methodology §2.1 (layer-wise probing) | `experiments/layerwise_probing/` |
 | Methodology §2.2 (EAP) | `src/EAP/` |
 | Experiment setup §4 (fine-tuning) | `src/Fine_tune/{Sentiment_classification,Question_answering,Machine_translation}/` |
 | Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attenion_change_eap_score_correlation/build_layer_kl_vs_eap.py` |
-| Results §5.1 (logit lens) | `experiments/Layerwise_Representation_Distance_Analysis/logit_lens_analysis.py` |
+| Results §5.1 (logit lens) | `experiments/layerwise_probing/logit_lens_analysis.py` |
 | Results §5.2 (localisation) | `src/EAP/` + `experiments/attention_matrix_analysis/` |
 | Results §5.3 (cross-task transfer) | `src/Fine_tune/cross_eval/` |
 | Appendix (induction-head) | `experiments/induction_head/` |

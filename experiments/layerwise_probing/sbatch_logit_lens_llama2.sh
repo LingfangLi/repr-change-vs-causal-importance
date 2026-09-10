@@ -3,7 +3,7 @@
 # Llama-2 is the slow one (~8 samples/min), so 12h time and A100 80GB partition.
 #SBATCH -D ./
 #SBATCH --export=ALL
-#SBATCH -o <PROJECT_ROOT>/experiments/Layerwise_Representation_Distance_Analysis/sbatch_lens_llama2_%j.out
+#SBATCH -o <PROJECT_ROOT>/experiments/layerwise_probing/sbatch_lens_llama2_%j.out
 #SBATCH --gres=gpu:1
 #SBATCH -p gpu-a100-cs
 #SBATCH -N 1
@@ -11,7 +11,7 @@
 #SBATCH --job-name=lens_llama2
 
 set -uo pipefail
-DIR="<PROJECT_ROOT>/experiments/Layerwise_Representation_Distance_Analysis"
+DIR="<PROJECT_ROOT>/experiments/layerwise_probing"
 module load miniforge3/25.3.0-python3.12.10
 source activate MI-FineTune
 export PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True,max_split_size_mb:512'
