@@ -90,18 +90,7 @@ The `<DATA_ROOT>` location holds two things:
 1. Set up a Python environment.
 2. Fine-tune your models with the scripts under `src/Fine_tune/`.
 3. Run EAP to compute the edge attribution CSVs.
-4. Use the analyses under `experiments/` to reproduce the paper's
-   quantitative results. (Figure-plotting scripts are not included in this
-   release; each analysis writes the underlying metrics to CSV/JSON.)
-
-## Notes
-
-- Some scripts read SLURM/cluster-specific configuration; adapt the
-  `#SBATCH` headers in `.sh` files to your scheduler.
-- HuggingFace tokens are read from the `HF_TOKEN` environment variable in
-  scripts that need gated-model access.
-- The `output/` directory is empty; running the pipelines from scratch
-  will populate it.
+4. Run the analyses under `experiments/` to reproduce the paper's numbers.
 
 ## License
 
