@@ -30,9 +30,6 @@ import pandas as pd
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 from bert_score import score as bertscore_fn
 
 from probe_sentiment_acc import BASE_HF, DTYPE, get_ft_path, get_final_norm, load_task
@@ -179,7 +176,6 @@ def main():
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     out_root = Path(__file__).resolve().parent / "Results" / "probe_autoreg" / ts
     out_root.mkdir(parents=True, exist_ok=True)
-    fig_dir = Path(__file__).resolve().parent / "figures" / "probe_compare"
 
     print(f"[setup] AR+BERTScore  model={MODEL_NAME} task={TASK} N={NUM_SAMPLES} "
           f"max_gen={MAX_GEN_LEN} greedy(do_sample=False) bert_lang={BERT_LANG} "
@@ -232,29 +228,6 @@ def main():
         json.dump({L: texts_pre[L] for L in range(n_layers)}, f, ensure_ascii=False, indent=2)
     with open(out_root / "texts_ft.json", "w") as f:
         json.dump({L: texts_ft[L] for L in range(n_layers)}, f, ensure_ascii=False, indent=2)
-
-    # Plot: 2 panels (BLEU, BERTScore) for the autoregressive case
-    x = layer_avg["layer"].values
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
-
-    axes[0].plot(x, 100 * layer_avg["ar_bleu_pre"], "o-", color="black", label="pretrained")
-    axes[0].plot(x, 100 * layer_avg["ar_bleu_ft"],  "s-", color="C3",    label="FT")
-    axes[0].set_xlabel("Layer"); axes[0].set_ylabel("Sentence-BLEU × 100 (↑ better)")
-    axes[0].set_title("Autoregressive + BLEU\n(no teacher forcing)")
-    axes[0].grid(True, alpha=0.3); axes[0].legend()
-
-    axes[1].plot(x, layer_avg["ar_bert_pre"], "o-", color="black", label="pretrained")
-    axes[1].plot(x, layer_avg["ar_bert_ft"],  "s-", color="C3",    label="FT")
-    axes[1].set_xlabel("Layer"); axes[1].set_ylabel(f"BERTScore F1 (lang={BERT_LANG}, ↑ better)")
-    axes[1].set_title("Autoregressive + BERTScore\n(no teacher forcing)")
-    axes[1].grid(True, alpha=0.3); axes[1].legend()
-
-    fig.suptitle(f"Autoregressive probing — {MODEL_NAME.upper()} / {TASK}, N={NUM_SAMPLES}, "
-                  f"max_gen={MAX_GEN_LEN}", y=1.02)
-    fig.tight_layout()
-    out_png = fig_dir / f"{ts}_{MODEL_NAME}_{TASK}_AR_bleu_bert.png"
-    fig.savefig(out_png, dpi=150); fig.savefig(out_png.with_suffix(".pdf"))
-    print(f"[fig] {out_png}")
 
 
 if __name__ == "__main__":
