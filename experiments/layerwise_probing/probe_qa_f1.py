@@ -29,7 +29,6 @@ import argparse, json, os, re, string, sys
 from collections import Counter
 from pathlib import Path
 
-sys.path.insert(0, "<DATA_ROOT>/pylibs")
 
 import numpy as np
 import pandas as pd

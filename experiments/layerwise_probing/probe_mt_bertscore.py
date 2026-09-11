@@ -23,7 +23,6 @@ import os, sys, json, gc
 from pathlib import Path
 from datetime import datetime
 
-sys.path.insert(0, "<DATA_ROOT>/pylibs")
 
 import numpy as np
 import pandas as pd
