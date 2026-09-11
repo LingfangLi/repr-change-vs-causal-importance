@@ -37,6 +37,8 @@ experiments/
 
 ## Running
 
+Install deps with `pip install -r requirements.txt`, then:
+
 1. Fine-tune the models — `src/Fine_tune/`.
 2. Compute EAP edges — `bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3|llama2>`.
 3. Run the analyses under `experiments/`; each writes its metrics to CSV/JSON.
