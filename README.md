@@ -31,9 +31,7 @@ experiments/
 | §2.1 layer-wise probing | `experiments/layerwise_probing/` |
 | §2.2 EAP | `src/EAP/` |
 | Fine-tuning | `src/Fine_tune/` |
-| Figure 2 (KL vs EAP + entropy) | `experiments/attention_matrix_analysis/{build_layer_kl_vs_eap,compute_layer_entropy}.py` |
-| Figure 3 (layer-wise probing) | `experiments/layerwise_probing/` |
-| Figure 4 (cross-task perf vs overlap) | `src/Fine_tune/cross_eval/build_perf_overlap_table.py` + `src/EAP/compute_same_ft_cross_data_overlap.py` |
+| Cross-task transfer + circuit overlap | `src/Fine_tune/cross_eval/` + `src/EAP/compute_same_ft_cross_data_overlap.py` |
 | Induction heads | `experiments/induction_head/` |
 | Corrupted-data construction | `src/find_corrupt_data/` |
 
