@@ -1,98 +1,57 @@
-# Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models — Code
+# Decoupling Representational Change and Causal Importance in Fine-Tuned LLMs
 
-Code for the paper
-**"Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models"**,
-accepted to **AACL-IJCNLP 2026** (main conference).
+Code for our AACL-IJCNLP 2026 (main conference) paper, *"Decoupling Internal
+Representational Changes and Causal Importance in Fine-Tuned Large Language
+Models."*
 
-This repository contains the code for our study of how fine-tuning reshapes
-decoder-only LLMs along two distinct axes — the **internal representational
-change** a model undergoes and the **causal importance** of its components for
-task performance — and shows that the two are largely decoupled: the layers
-that change the most are not the ones that matter most causally. We fine-tune
-four LLMs on six tasks and quantify representational change (attention-pattern
-KL, layer-wise probing) against causal
-importance obtained via Edge Attribution Patching, and further analyse
-induction-head reuse and cross-task transfer.
+We fine-tune four LLMs (GPT-2 Small, Llama-3.2-1B, Qwen2-0.5B, Llama-2-7B) on
+six tasks and, layer by layer, compare how much fine-tuning *changes* a model's
+representations (attention-map KL, logit-lens probing) against which components
+are *causally* important for the task (Edge Attribution Patching). The two are
+largely decoupled: the layers that change most are not the ones that matter most.
 
-## Repository layout
+## Layout
 
 ```
 src/
-  Fine_tune/                      Fine-tuning + cross-task evaluation
-    Sentiment_classification/     SST-2, Yelp full-FT scripts (per model)
-    Question_answering/           SQuAD, CoQA full-FT scripts
-    Machine_translation/          KDE4, Tatoeba full-FT scripts
-    cross_eval/                   Cross-task performance matrix
-  EAP/                            Edge Attribution Patching pipeline
-  find_corrupt_data/              Corrupted-dataset generation (counter-examples)
-
+  Fine_tune/        Full-parameter SFT + cross-task evaluation
+  EAP/              Edge Attribution Patching (edge-importance scores)
+  find_corrupt_data/  Corrupted (counter-example) data construction
 experiments/
-  attention_matrix_analysis/                Per-layer attention-KL (base vs
-                                            fine-tuned) joined with per-layer
-                                            EAP score (Figure 2)
-  induction_head/                           Induction-head detection +
-                                            EAP-circuit overlap
-  layerwise_probing/                        Per-layer logit-lens probing
-                                            (task metric recoverable per layer)
+  attention_matrix_analysis/  Per-layer attention-KL + EAP score, and their entropy
+  layerwise_probing/          Per-layer logit-lens probing
+  induction_head/             Induction-head detection + overlap with EAP heads
 ```
 
-## Paper section → code mapping
+## Paper → code
 
-| Paper section | Code |
+| Paper | Code |
 |---|---|
-| Methodology §2.1 (attention pattern KL) | `experiments/attention_matrix_analysis/` |
-| Methodology §2.1 (layer-wise probing) | `experiments/layerwise_probing/` |
-| Methodology §2.2 (EAP) | `src/EAP/` |
-| Experiment setup §4 (fine-tuning) | `src/Fine_tune/{Sentiment_classification,Question_answering,Machine_translation}/` |
-| Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attention_matrix_analysis/build_layer_kl_vs_eap.py` |
-| Results §5.1 (logit lens) | `experiments/layerwise_probing/probe_sentiment_acc.py` |
-| Results §5.2 (localisation) | `src/EAP/` + `experiments/attention_matrix_analysis/` |
-| Results §5.3 (cross-task transfer) | `src/Fine_tune/cross_eval/` |
-| Appendix (induction-head) | `experiments/induction_head/` |
-| Appendix (corrupted-data construction) | `src/find_corrupt_data/` |
+| §2.1 attention-KL | `experiments/attention_matrix_analysis/` |
+| §2.1 layer-wise probing | `experiments/layerwise_probing/` |
+| §2.2 EAP | `src/EAP/` |
+| Fine-tuning | `src/Fine_tune/` |
+| Figure 2 (KL vs EAP + entropy) | `experiments/attention_matrix_analysis/{build_layer_kl_vs_eap,compute_layer_entropy}.py` |
+| Figure 3 (layer-wise probing) | `experiments/layerwise_probing/` |
+| Figure 4 (cross-task perf vs overlap) | `src/Fine_tune/cross_eval/build_perf_overlap_table.py` + `src/EAP/compute_same_ft_cross_data_overlap.py` |
+| Induction heads | `experiments/induction_head/` |
+| Corrupted-data construction | `src/find_corrupt_data/` |
 
+## Tasks
 
-## Models and tasks
+Two per category: SST-2 / Yelp (sentiment), SQuAD / CoQA (QA), KDE4 / Tatoeba
+(en→fr MT). All fine-tuning is full-parameter SFT via `trl.SFTTrainer`.
 
-Four models:
-- GPT-2 Small (12 layers)
-- Llama-3.2-1B (16 layers)
-- Qwen2-0.5B (24 layers)
-- Llama-2-7B (32 layers)
+## Running
 
-Six tasks (two per category):
-- **Sentiment classification**: SST-2, Yelp Polarity
-- **Question answering**: SQuAD v1.1, CoQA
-- **Machine translation**: KDE4 (en→fr), Tatoeba (en→fr)
+1. Fine-tune the models — `src/Fine_tune/`.
+2. Compute EAP edges — `bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3|llama2>`.
+3. Run the analyses under `experiments/`; each writes its metrics to CSV/JSON.
 
-All fine-tuning is full-parameter SFT via `trl.SFTTrainer`.
-
-## Path placeholders
-
-The shipped code uses the following placeholders. Replace them with your
-own paths before running:
-
-| Placeholder | Meaning |
-|---|---|
-| `<PROJECT_ROOT>` | Absolute path to this repository root |
-| `<HOME>` | Your user home directory |
-| `<DATA_ROOT>` | Directory where fine-tuned checkpoints and intermediate edge CSVs live |
-| `<CONDA_ENV>` | Path to the Python environment used to run experiments |
-
-The `<DATA_ROOT>` location holds two things:
-1. Fine-tuned model directories (one per `(model, task)` pair) produced by
-   the scripts in `src/Fine_tune/`.
-2. EAP edge CSVs (`<DATA_ROOT>/EAP_edges/finetuned/<model>_<task>_finetuned_edges.csv`)
-   produced by `src/EAP/`.
-
-## Quick start
-
-1. Set up a Python environment.
-2. Fine-tune your models with the scripts under `src/Fine_tune/`.
-3. Run EAP to compute the edge attribution CSVs.
-4. Run the analyses under `experiments/` to reproduce the paper's numbers.
+Paths are placeholders (`<PROJECT_ROOT>`, `<DATA_ROOT>`, `<MODEL_STORAGE>`);
+set them to your own before running. Gated models read `HF_TOKEN` from the env.
 
 ## License
 
-Released as the code accompanying our AACL-IJCNLP 2026 paper. A license file
-will be added; until one is present, please contact the authors regarding reuse.
+Released with our AACL-IJCNLP 2026 paper. A license file will be added; until
+then, contact the authors about reuse.
