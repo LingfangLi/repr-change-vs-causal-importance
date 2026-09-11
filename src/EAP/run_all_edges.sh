@@ -1,12 +1,12 @@
 #!/bin/bash
 # EAP edge generation for one model: 6 pretrained + 6 own-task + 30 cross-task
 # runs (top_k=-1, all edges). The cross-task CSVs feed the Figure-4 overlap
-# (compute_same_ft_cross_data_overlap.py). Llama-2-7B is run separately.
+# (compute_same_ft_cross_data_overlap.py).
 #
-#   bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3>
+#   bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3|llama2>
 set -uo pipefail
 
-MODEL="${1:?usage: run_all_edges.sh <gpt2|qwen2|llama3>}"
+MODEL="${1:?usage: run_all_edges.sh <gpt2|qwen2|llama3|llama2>}"
 PROJECT_ROOT="<PROJECT_ROOT>"
 MODEL_DIR="<DATA_ROOT>/fine_tuned_model"
 DATA_DIR="${PROJECT_ROOT}/output/corrupted_data"
@@ -42,7 +42,16 @@ case "$MODEL" in
     FT[kde4]="${MODEL_DIR}/llama3.2-1b-kde4-full-ft-20260106-221031"
     FT[tatoeba]="${MODEL_DIR}/llama3.2-1b-tatoeba-full-ft-20260106-225023"
     ;;
-  *) echo "unknown model '$MODEL' (use gpt2|qwen2|llama3)"; exit 1 ;;
+  llama2)
+    MODEL_NAME=llama2; BASE_MODEL="meta-llama/Llama-2-7b-hf"
+    FT[yelp]="${MODEL_DIR}/llama2-7b-yelp-full"
+    FT[sst2]="${MODEL_DIR}/llama2-7b-sst2-full"
+    FT[squad]="${MODEL_DIR}/llama2-7b-squad-full"
+    FT[coqa]="${MODEL_DIR}/llama2-7b-coqa-full"
+    FT[kde4]="${MODEL_DIR}/llama2-7b-kde4-full"
+    FT[tatoeba]="${MODEL_DIR}/llama2-7b-tatoeba-full"
+    ;;
+  *) echo "unknown model '$MODEL' (use gpt2|qwen2|llama3|llama2)"; exit 1 ;;
 esac
 
 OUT_DIR="${PROJECT_ROOT}/output/EAP_edges/${MODEL}_all_edges"
