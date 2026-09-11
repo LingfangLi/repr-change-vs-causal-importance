@@ -42,7 +42,7 @@ experiments/
 3. Run the analyses under `experiments/`; each writes its metrics to CSV/JSON.
 
 Paths are placeholders (`<PROJECT_ROOT>`, `<DATA_ROOT>`, `<MODEL_STORAGE>`);
-set them to your own before running. Gated models read `HF_TOKEN` from the env.
+set them to your own before running.
 
 ## License
 
