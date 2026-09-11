@@ -44,6 +44,11 @@ experiments/
 Paths are placeholders (`<PROJECT_ROOT>`, `<DATA_ROOT>`, `<MODEL_STORAGE>`);
 set them to your own before running.
 
+## Acknowledgements
+
+The EAP implementation in `src/EAP/eap/` is adapted from Michael Hanna's
+[EAP-IG](https://github.com/hannamw/EAP-IG) (MIT); see `src/EAP/eap/LICENSE`.
+
 ## License
 
 Released with our AACL-IJCNLP 2026 paper. A license file will be added; until

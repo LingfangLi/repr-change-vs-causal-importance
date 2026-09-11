@@ -1,3 +1,5 @@
+# Vendored from github.com/hannamw/EAP-IG (MIT, (c) 2025 Michael Hanna),
+# modified for this project. See LICENSE in this directory.
 from typing import List, Dict, Union, Tuple, Literal, Optional, Set
 from collections import defaultdict
 from pathlib import Path 

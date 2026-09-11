@@ -1,3 +1,5 @@
+# Vendored from github.com/hannamw/EAP-IG (MIT, (c) 2025 Michael Hanna),
+# modified for this project. See LICENSE in this directory.
 from typing import Callable, List, Union
 
 import torch
