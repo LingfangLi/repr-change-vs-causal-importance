@@ -45,7 +45,7 @@ experiments/
 | Methodology §2.2 (EAP) | `src/EAP/` |
 | Experiment setup §4 (fine-tuning) | `src/Fine_tune/{Sentiment_classification,Question_answering,Machine_translation}/` |
 | Results §5.1 (FT dynamics: KL vs EAP correlation) | `experiments/attention_matrix_analysis/build_layer_kl_vs_eap.py` |
-| Results §5.1 (logit lens) | `experiments/layerwise_probing/probe_logit_lens.py` |
+| Results §5.1 (logit lens) | `experiments/layerwise_probing/probe_sentiment_acc.py` |
 | Results §5.2 (localisation) | `src/EAP/` + `experiments/attention_matrix_analysis/` |
 | Results §5.3 (cross-task transfer) | `src/Fine_tune/cross_eval/` |
 | Appendix (induction-head) | `experiments/induction_head/` |

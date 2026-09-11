@@ -16,7 +16,7 @@ Env vars:
   TASK       : yelp / sst2 / kde4 / tatoeba / squad / coqa
   NUM_SAMPLES: int (default 1000)
 
-Run:  MODEL_NAME=llama2 TASK=squad NUM_SAMPLES=1000 python probe_logit_lens.py
+Run:  MODEL_NAME=llama2 TASK=squad NUM_SAMPLES=1000 python probe_sentiment_acc.py
 """
 from __future__ import annotations
 import os, json, gc, random

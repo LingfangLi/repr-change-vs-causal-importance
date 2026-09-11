@@ -14,11 +14,11 @@ Computes per-layer means of:
 Writes layer_scores.csv (and overwrites layer_avg.csv if --update-csv).
 
 Usage:
-  python probe_score_texts.py <run_dir>                       # score one run
-  python probe_score_texts.py --all                           # score every run
-  python probe_score_texts.py <run_dir> --metrics bleu        # only BLEU
-  python probe_score_texts.py <run_dir> --metrics squad_f1    # only SQuAD F1
-  python probe_score_texts.py <run_dir> --bert-model xlm-roberta-large
+  python probe_qa_f1.py <run_dir>                       # score one run
+  python probe_qa_f1.py --all                           # score every run
+  python probe_qa_f1.py <run_dir> --metrics bleu        # only BLEU
+  python probe_qa_f1.py <run_dir> --metrics squad_f1    # only SQuAD F1
+  python probe_qa_f1.py <run_dir> --bert-model xlm-roberta-large
 
 Env vars (override summary.json):
   BERT_LANG       (e.g. fr, en)
@@ -206,7 +206,7 @@ def score_run(run_dir: Path, metrics: list[str], bert_model_type: str | None,
         with open(items_path) as f:
             refs = json.load(f)
     else:
-        from probe_logit_lens import load_task
+        from probe_sentiment_acc import load_task
         N = meta.get("n_samples", 30)
         items = load_task(task, N)[:N]
         refs = [gt for (_p, gt, _k) in items]

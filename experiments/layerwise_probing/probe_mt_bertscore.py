@@ -16,7 +16,7 @@ Env vars:
   NUM_SAMPLES   (default 30)
   MAX_GEN_LEN   (optional override; default = task-family eval value)
 
-Run:  MODEL_NAME=llama2 TASK=kde4 python probe_autoreg.py
+Run:  MODEL_NAME=llama2 TASK=kde4 python probe_mt_bertscore.py
 """
 from __future__ import annotations
 import os, sys, json, gc
@@ -35,7 +35,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from bert_score import score as bertscore_fn
 
-from probe_logit_lens import BASE_HF, DTYPE, get_ft_path, get_final_norm, load_task
+from probe_sentiment_acc import BASE_HF, DTYPE, get_ft_path, get_final_norm, load_task
 
 MODEL_NAME  = os.environ.get("MODEL_NAME",  "gpt2")
 TASK        = os.environ.get("TASK",        "kde4")
