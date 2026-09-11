@@ -35,11 +35,6 @@ experiments/
 | Induction heads | `experiments/induction_head/` |
 | Corrupted-data construction | `src/find_corrupt_data/` |
 
-## Tasks
-
-Two per category: SST-2 / Yelp (sentiment), SQuAD / CoQA (QA), KDE4 / Tatoeba
-(en→fr MT). All fine-tuning is full-parameter SFT via `trl.SFTTrainer`.
-
 ## Running
 
 1. Fine-tune the models — `src/Fine_tune/`.
