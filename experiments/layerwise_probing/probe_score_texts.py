@@ -1,6 +1,6 @@
 """Score saved per-layer generated texts. Decoupled from generation.
 
-Reads any run dir under Results/probe_autoreg_bertscore/<ts>/ that contains:
+Reads any run dir under Results/probe_autoreg/<ts>/ that contains:
   - summary.json   (model, task, n_layers, bert_lang, ...)
   - texts_pre.json (dict[layer L] -> list[str], length N)
   - texts_ft.json  (same)
@@ -14,11 +14,11 @@ Computes per-layer means of:
 Writes layer_scores.csv (and overwrites layer_avg.csv if --update-csv).
 
 Usage:
-  python score_texts.py <run_dir>                       # score one run
-  python score_texts.py --all                           # score every run
-  python score_texts.py <run_dir> --metrics bleu        # only BLEU
-  python score_texts.py <run_dir> --metrics squad_f1    # only SQuAD F1
-  python score_texts.py <run_dir> --bert-model xlm-roberta-large
+  python probe_score_texts.py <run_dir>                       # score one run
+  python probe_score_texts.py --all                           # score every run
+  python probe_score_texts.py <run_dir> --metrics bleu        # only BLEU
+  python probe_score_texts.py <run_dir> --metrics squad_f1    # only SQuAD F1
+  python probe_score_texts.py <run_dir> --bert-model xlm-roberta-large
 
 Env vars (override summary.json):
   BERT_LANG       (e.g. fr, en)
@@ -36,7 +36,7 @@ import pandas as pd
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE / "Results" / "probe_autoreg_bertscore"
+ROOT = HERE / "Results" / "probe_autoreg"
 
 
 def sentence_bleu_safe(ref: str, hyp: str) -> float:
@@ -206,7 +206,7 @@ def score_run(run_dir: Path, metrics: list[str], bert_model_type: str | None,
         with open(items_path) as f:
             refs = json.load(f)
     else:
-        from logit_lens_analysis import load_task
+        from probe_logit_lens import load_task
         N = meta.get("n_samples", 30)
         items = load_task(task, N)[:N]
         refs = [gt for (_p, gt, _k) in items]
@@ -302,7 +302,7 @@ def score_run(run_dir: Path, metrics: list[str], bert_model_type: str | None,
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("run", nargs="?", help="Run directory under Results/probe_autoreg_bertscore/")
+    ap.add_argument("run", nargs="?", help="Run directory under Results/probe_autoreg/")
     ap.add_argument("--all", action="store_true", help="score every run")
     ap.add_argument("--metrics", default="bleu,bert",
                      help="comma-sep subset of {bleu,bert,chrf}")

@@ -15,6 +15,8 @@ Env vars:
   TASK          (kde4, tatoeba, squad, coqa, yelp, sst2)
   NUM_SAMPLES   (default 30)
   MAX_GEN_LEN   (optional override; default = task-family eval value)
+
+Run:  MODEL_NAME=llama2 TASK=kde4 python probe_autoreg.py
 """
 from __future__ import annotations
 import os, sys, json, gc
@@ -33,7 +35,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from bert_score import score as bertscore_fn
 
-from logit_lens_analysis import BASE_HF, DTYPE, get_ft_path, get_final_norm, load_task
+from probe_logit_lens import BASE_HF, DTYPE, get_ft_path, get_final_norm, load_task
 
 MODEL_NAME  = os.environ.get("MODEL_NAME",  "gpt2")
 TASK        = os.environ.get("TASK",        "kde4")
@@ -175,7 +177,7 @@ def bertscore_per_layer(texts, refs, n_layers, lang):
 
 def main():
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_root = Path(__file__).resolve().parent / "Results" / "probe_autoreg_bertscore" / ts
+    out_root = Path(__file__).resolve().parent / "Results" / "probe_autoreg" / ts
     out_root.mkdir(parents=True, exist_ok=True)
     fig_dir = Path(__file__).resolve().parent / "figures" / "probe_compare"
 
