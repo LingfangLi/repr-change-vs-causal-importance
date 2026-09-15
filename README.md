@@ -13,9 +13,9 @@ largely decoupled: the layers that change most are not the ones that matter most
 ## Citation
 
 ```bibtex
-@inproceedings{repr-change-vs-causal-importance,
+@inproceedings{li2026decoupling,
   title     = {Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models},
-  author    = {TODO: full author list},
+  author    = {Li, Lingfang and Sen, Procheta and Das, Shubham and Bollegala, Danushka},
   booktitle = {Proceedings of AACL-IJCNLP},
   year      = {2026},
 }
