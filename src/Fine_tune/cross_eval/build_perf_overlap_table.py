@@ -1,7 +1,7 @@
 """Build the Perf-Delta + Overlap LaTeX table: per (test task, FT source),
 Perf-Delta = (FT - Base) * 100 pp and Overlap = % of top-400 edges shared with
 the row task's own circuit. Reads <model>_perf_matrix.csv per model and the
-overlap from crosstask_overlap_combined.csv.
+overlap from same_ft_cross_data_overlap/combined_long.csv.
 """
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from collections import defaultdict
 
 CROSS_EVAL_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CROSS_EVAL_DIR.parents[2]
-OVERLAP_CSV = (PROJECT_ROOT / "output/EAP_edges/cross_task_edges/summary_tables"
-                            / "crosstask_overlap_combined.csv")
+OVERLAP_CSV = (PROJECT_ROOT / "output/EAP_edges/same_ft_cross_data_overlap"
+                            / "combined_long.csv")
 
 TASKS = ["yelp", "sst2", "squad", "coqa", "kde4", "tatoeba"]
 TASK_METRIC = {"sst2": "Accuracy", "yelp": "Accuracy",
@@ -26,7 +26,7 @@ MODELS = [
     ("gpt2",     "GPT-2 Small",  "gpt2"),
     ("llama3.2", "LLama-3.2-1B", "llama3.2"),
     ("qwen2",    "Qwen2-0.5B",   "qwen2"),
-    ("llama2",   "LLama-2-7B",   "llama2_qlora"),
+    ("llama2",   "LLama-2-7B",   "llama2"),
 ]
 
 
@@ -185,13 +185,7 @@ for mkey, disp, ovk in MODELS:
 lines.append(r"\end{tabular}}")
 lines.append(r"\caption{Cross-task performance change and EAP-circuit overlap "
              r"for GPT-2 Small, LLama-3.2-1B, Qwen2-0.5B and LLama-2-7B. "
-             r"GPT-2 and Llama-3.2 values follow the original paper runs "
-             r"(old raw data) for Yelp/SQuAD/CoQA/KDE4/Tatoeba rows and "
-             r"columns; the SST-2 row and SST-2 column use the current "
-             r"full fine-tuning runs (the original paper used Twitter, "
-             r"which is excluded here). Qwen2 follows the original paper "
-             r"runs in full. Llama-2-7B follows the QLoRA fine-tuning "
-             r"reported in the original paper. \textbf{Perf$\Delta$} is "
+             r"\textbf{Perf$\Delta$} is "
              r"the absolute percentage-point change "
              r"$(m_{\mathrm{FT}}-m_{\mathrm{Base}})\times 100$ vs.\ the "
              r"pre-trained base on the row task (Accuracy for SST2/Yelp, "
