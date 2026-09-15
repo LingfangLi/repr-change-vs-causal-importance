@@ -1,4 +1,4 @@
-# Decoupling Representational Change and Causal Importance in Fine-Tuned LLMs
+# repr-change-vs-causal-importance
 
 Code for our AACL-IJCNLP 2026 (main conference) paper, *"Decoupling Internal
 Representational Changes and Causal Importance in Fine-Tuned Large Language
@@ -10,46 +10,63 @@ representations (attention-map KL, logit-lens probing) against which components
 are *causally* important for the task (Edge Attribution Patching). The two are
 largely decoupled: the layers that change most are not the ones that matter most.
 
-## Layout
+## Citation
 
-```
-src/
-  Fine_tune/        Full-parameter SFT + cross-task evaluation
-  EAP/              Edge Attribution Patching (edge-importance scores)
-  find_corrupt_data/  Corrupted (counter-example) data construction
-experiments/
-  attention_matrix_analysis/  Per-layer attention-KL + EAP score, and their entropy
-  layerwise_probing/          Per-layer logit-lens probing
-  induction_head/             Induction-head detection + overlap with EAP heads
+```bibtex
+@inproceedings{repr-change-vs-causal-importance,
+  title     = {Decoupling Internal Representational Changes and Causal Importance in Fine-Tuned Large Language Models},
+  author    = {TODO: full author list},
+  booktitle = {Proceedings of AACL-IJCNLP},
+  year      = {2026},
+}
 ```
 
-## Paper → code
+## Environment
 
-| Paper | Code |
-|---|---|
-| §2.1 attention-KL | `experiments/attention_matrix_analysis/` |
-| §2.1 layer-wise probing | `experiments/layerwise_probing/` |
-| §2.2 EAP | `src/EAP/` |
-| Fine-tuning | `src/Fine_tune/` |
-| Cross-task transfer + circuit overlap | `src/Fine_tune/cross_eval/` + `src/EAP/compute_same_ft_cross_data_overlap.py` |
-| Induction heads | `experiments/induction_head/` |
-| Corrupted-data construction | `src/find_corrupt_data/` |
+```bash
+pip install -r requirements.txt
+```
 
-## Running
+Set the path placeholders (`<PROJECT_ROOT>`, `<DATA_ROOT>`, `<MODEL_STORAGE>`)
+in the scripts to your own before running.
 
-Install deps with `pip install -r requirements.txt`, then:
+## 1. Fine-tuning
 
-1. Fine-tune the models — `src/Fine_tune/`.
-2. Compute EAP edges — `bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3|llama2>`.
-3. Run the analyses under `experiments/`; each writes its metrics to CSV/JSON.
+Full-parameter SFT (`trl.SFTTrainer`), one checkpoint per (model, task):
 
-Paths are placeholders (`<PROJECT_ROOT>`, `<DATA_ROOT>`, `<MODEL_STORAGE>`);
-set them to your own before running.
+- `src/Fine_tune/{Sentiment_classification,Question_answering,Machine_translation}/`
+- `src/Fine_tune/cross_eval/` — cross-task performance matrix.
 
-## Acknowledgements
+## 2. Corrupted data
 
-The EAP implementation in `src/EAP/eap/` is adapted from Michael Hanna's
-[EAP-IG](https://github.com/hannamw/EAP-IG) (MIT); see `src/EAP/eap/LICENSE`.
+- `src/find_corrupt_data/` — build the counter-example (corrupted) inputs EAP needs.
+
+## 3. EAP edge importance
+
+```bash
+bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3|llama2>
+```
+
+Writes pretrained + own-task + cross-task edge CSVs to
+`output/EAP_edges/<model>_all_edges/`. The EAP implementation in `src/EAP/eap/`
+is adapted from [EAP-IG](https://github.com/hannamw/EAP-IG) (MIT; see
+`src/EAP/eap/LICENSE`).
+
+## 4. Analyses
+
+Each script writes its metrics to CSV/JSON.
+
+- **Attention-KL vs EAP score, per layer** — `experiments/attention_matrix_analysis/`:
+  `measure_attention_kl.py` → `build_layer_kl_summary.py` → `build_layer_kl_vs_eap.py`
+  → `compute_layer_entropy.py` (normalised layer-wise entropy).
+- **Layer-wise probing** — `experiments/layerwise_probing/`:
+  `probe_sentiment_acc.py` (accuracy), `probe_mt_bertscore.py` (BERTScore),
+  `probe_qa_f1.py` (F1).
+- **Cross-task performance vs circuit overlap** —
+  `src/Fine_tune/cross_eval/build_perf_overlap_table.py` +
+  `src/EAP/compute_same_ft_cross_data_overlap.py`.
+- **Induction heads** — `experiments/induction_head/`:
+  `detect_induction_head.py`, `overlap_analysis.py`.
 
 ## License
 
