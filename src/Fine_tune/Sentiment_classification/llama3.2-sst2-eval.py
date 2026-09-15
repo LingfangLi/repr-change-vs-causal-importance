@@ -10,7 +10,7 @@ MODEL_PATH = "<MODEL_STORAGE>/fine-tuning-project/fine_tuned_model/llama3.2-1b-s
 DATASET_NAME = "stanfordnlp/sst2"
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 FINETUNED = False
-MODEL_NAME = "meta-llama/Llama-3.2-1B"  #"Qwen/Qwen2-0.5B"
+MODEL_NAME = "meta-llama/Llama-3.2-1B"
 # SST-2 mapping: label 0 = negative, label 1 = positive
 ID2LABEL = {
     0: "negative",
