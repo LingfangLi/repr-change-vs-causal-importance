@@ -81,5 +81,5 @@ Each script writes its metrics to CSV/JSON.
 
 ## License
 
-Released with our AACL-IJCNLP 2026 paper. A license file will be added; until
-then, contact the authors about reuse.
+MIT — see [`LICENSE`](LICENSE). The vendored EAP code under `src/EAP/eap/` keeps
+its own MIT license (`src/EAP/eap/LICENSE`).
