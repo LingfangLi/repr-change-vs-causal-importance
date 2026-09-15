@@ -30,9 +30,7 @@ MODELS = [
 ]
 
 
-# ---------------------------------------------------------------------------
 # Load performance tables — return perf[source][eval] = {metric: value}
-# ---------------------------------------------------------------------------
 
 def _read_matrix_csv(csv_path: Path) -> dict:
     """Read a wide matrix CSV with columns Model_Source, Eval_Task, Accuracy, F1, EM, BLEU."""
@@ -72,9 +70,7 @@ def load_perf(model_key: str) -> dict:
 perf_by_model = {mkey: load_perf(mkey) for mkey, _disp, _ovk in MODELS}
 
 
-# ---------------------------------------------------------------------------
 # Load overlap CSV
-# ---------------------------------------------------------------------------
 
 overlap_by_model: dict = defaultdict(lambda: defaultdict(dict))
 with OVERLAP_CSV.open() as f:
@@ -89,9 +85,7 @@ with OVERLAP_CSV.open() as f:
         overlap_by_model[m][t][ft] = pct
 
 
-# ---------------------------------------------------------------------------
 # Formatting
-# ---------------------------------------------------------------------------
 
 def canonical_metric_value(cell: dict | None, task: str) -> float | None:
     if not cell:
@@ -122,9 +116,7 @@ def fmt_overlap(pct: float | None) -> str:
     return f"{pct:.2f}\\%"
 
 
-# ---------------------------------------------------------------------------
 # Build LaTeX
-# ---------------------------------------------------------------------------
 
 lines: list[str] = []
 lines.append(r"\begin{table*}[htb]")
