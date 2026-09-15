@@ -49,8 +49,9 @@ Full-parameter SFT (`trl.SFTTrainer`), one checkpoint per (model, task):
 ## 2. Corrupted data
 
 EAP needs a corrupted (counter-example) version of each task's inputs, read from
-`output/corrupted_data/<task>_corrupted.csv`. Ours were curated manually (see the
-paper appendix) and are not released; supply your own in that format.
+`output/corrupted_data/<task>_corrupted.csv` — each with columns `clean`,
+`corrupted`, `label`. Ours were curated manually (see the paper appendix) and
+are not released; supply your own in that format.
 
 ## 3. EAP edge importance
 
