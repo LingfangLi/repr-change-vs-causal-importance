@@ -29,7 +29,7 @@ from collections import defaultdict
 CROSS_EVAL_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = CROSS_EVAL_DIR.parents[2]
 OVERLAP_CSV = (PROJECT_ROOT / "output/EAP_edges/cross_task_edges/summary_tables"
-                            / "CrossTask_Overlap_NewEdges_Combined.csv")
+                            / "crosstask_overlap_combined.csv")
 
 TASKS = ["yelp", "sst2", "squad", "coqa", "kde4", "tatoeba"]
 TASK_METRIC = {"sst2": "Accuracy", "yelp": "Accuracy",
