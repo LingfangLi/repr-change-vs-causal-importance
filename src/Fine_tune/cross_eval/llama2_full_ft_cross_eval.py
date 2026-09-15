@@ -1,16 +1,6 @@
-"""
-Cross-task evaluation matrix for Llama-2-7B full fine-tuning.
-
-For each of 6 full-FT checkpoints (yelp/sst2/squad/coqa/kde4/tatoeba) plus the
-base PT model, evaluate on all 6 tasks' eval splits. Produces a 7×6 matrix of
-metrics suitable for filling the Perf∆ column of the cross-task table.
-
-Metric per task:
-  sst2 / yelp           → accuracy
-  squad / coqa          → F1, EM
-  kde4 / tatoeba        → BLEU
-
-Writes: llama2_perf_matrix.csv
+"""Cross-task eval matrix for Llama-2-7B full FT: each of the 6 FT checkpoints
+(+ base) on all 6 tasks' eval splits (accuracy / F1,EM / BLEU). Writes
+llama2_perf_matrix.csv.
 """
 import os
 import re

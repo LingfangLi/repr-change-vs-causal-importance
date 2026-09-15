@@ -1,15 +1,7 @@
-"""Build the Perf-Delta + Overlap combined LaTeX table (4 model blocks).
-
-Rows = test task. Columns = fine-tuned source model. Each column has two
-sub-columns: Perf-Delta (absolute percentage-point change vs. Base on the
-row task) and Overlap (% of top-400 edges shared with the row task's own
-fine-tuned circuit).
-
-Formula:  Perf-Delta = (FT - Base) * 100, expressed as percentage points.
-          All underlying metrics (Accuracy, F1, BLEU) live in [0, 1].
-
-Reads one performance matrix per model (<model>_perf_matrix.csv) and the
-top-400 EAP overlap from crosstask_overlap_combined.csv.
+"""Build the Perf-Delta + Overlap LaTeX table: per (test task, FT source),
+Perf-Delta = (FT - Base) * 100 pp and Overlap = % of top-400 edges shared with
+the row task's own circuit. Reads <model>_perf_matrix.csv per model and the
+overlap from crosstask_overlap_combined.csv.
 """
 from __future__ import annotations
 

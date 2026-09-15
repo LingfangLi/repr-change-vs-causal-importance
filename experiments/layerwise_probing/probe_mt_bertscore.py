@@ -1,21 +1,8 @@
-"""Per-layer AUTOREGRESSIVE generation + BERTScore F1 (no teacher forcing).
+"""Per-layer autoregressive generation through the logit lens + BERTScore F1
+(greedy, matching the FT eval scripts). Writes layer_avg.csv + texts_{pre,ft}.json
+per run; probe_qa_f1.py then scores those texts.
 
-At each layer L, for each sample:
-  - start from prompt
-  - greedy-generate max_new_tokens by, at each step, taking the argmax of
-    layer-L lens logits on the last position's hidden state
-  - append predicted token, continue
-After all generations done, batch BERTScore the texts per layer vs GT.
-
-Generation matches the FT eval scripts in src/Fine_tune/*/[task]-eval.py:
-  do_sample=False (greedy), no sampling kwargs, task-family max_new_tokens.
-
-Env vars:
-  MODEL_NAME    (gpt2 ...)
-  TASK          (kde4, tatoeba, squad, coqa, yelp, sst2)
-  NUM_SAMPLES   (default 30)
-  MAX_GEN_LEN   (optional override; default = task-family eval value)
-
+Env: MODEL_NAME, TASK, NUM_SAMPLES, MAX_GEN_LEN (optional).
 Run:  MODEL_NAME=llama2 TASK=kde4 python probe_mt_bertscore.py
 """
 from __future__ import annotations

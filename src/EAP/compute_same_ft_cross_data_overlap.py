@@ -1,25 +1,8 @@
-"""Circuit-stability overlap: for each fine-tuned model, compare its
-**own-task** circuit against its circuit on each **other task's corrupted
-data**. Answers the question: "how invariant is the FT circuit across
-different input distributions, holding the fine-tuned weights constant?"
-
-  Cell (row=Data_Task D, col=FT_Task F):
-      overlap of top-400 edges between
-        * F-finetuned model on F's corrupted data   (own-task circuit)
-        * F-finetuned model on D's corrupted data   (same model, different data)
-      where D != F.  Diagonals are trivially 100% and are left blank.
-
-Layout: 6 rows x 6 cols, diagonals empty, so 30 populated cells per model.
-
-Source edges (top-400), unified:
-  output/EAP_edges/cross_task_edges_v2/   (contains all 4 models' files, flat)
-
-Output: output/EAP_edges/cross_task_edges_v2/same_ft_cross_data_overlap/
-  <model>_same_ft_cross_data_overlap.csv      (wide 6x6)
-  combined_long.csv                           (all 4 models, long format)
-  overlap_edges/
-    <model>_FT-<ft>_data-<data>_overlap.csv   (per-cell edge list,
-                                               30 cells x 4 models = 120 files)
+"""Circuit-stability overlap: per FT model, overlap of its top-400 edges on its
+own task's corrupted data vs on each other task's corrupted data (same weights,
+different inputs); diagonals are 100% and left blank. Reads the flat edge CSVs
+in output/EAP_edges/cross_task_edges_v2/ and writes the 6x6 overlap per model
+plus combined_long.csv under same_ft_cross_data_overlap/.
 """
 from __future__ import annotations
 

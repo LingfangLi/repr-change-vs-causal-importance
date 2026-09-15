@@ -1,21 +1,8 @@
-"""Layer-wise Logit Lens analysis: pretrained vs fine-tuned, no filtering.
+"""Layer-wise logit-lens probing, pretrained vs fine-tuned: per layer, GT-token
+prob/rank/top1 (and pos/neg argmax for sentiment). Writes layer_avg_lens.csv +
+per_sample_per_layer_lens.csv per run.
 
-For each (model, task) cell on 1000 test samples:
-  - Forward pass through pretrained model with output_hidden_states=True
-  - Forward pass through fine-tuned model with output_hidden_states=True
-  - Apply final layernorm + lm_head to each layer's last-token hidden
-  - Per layer: prob/rank/top1 of GT token; for sentiment: pos vs neg argmax
-
-Outputs (no filtering applied — every sample contributes equally):
-  Results/<task>/<model_dir>_lens/<ts>/per_sample_per_layer_lens.csv
-  Results/<task>/<model_dir>_lens/<ts>/layer_avg_lens.csv
-  Results/<task>/<model_dir>_lens/<ts>/summary.json
-
-Env vars:
-  MODEL_NAME : gpt2 / qwen2 / llama3.2 / llama2
-  TASK       : yelp / sst2 / kde4 / tatoeba / squad / coqa
-  NUM_SAMPLES: int (default 1000)
-
+Env: MODEL_NAME (gpt2|qwen2|llama3.2|llama2), TASK (yelp|sst2|kde4|tatoeba|squad|coqa), NUM_SAMPLES.
 Run:  MODEL_NAME=llama2 TASK=squad NUM_SAMPLES=1000 python probe_sentiment_acc.py
 """
 from __future__ import annotations

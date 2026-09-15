@@ -1,28 +1,9 @@
-"""Score saved per-layer generated texts. Decoupled from generation.
+"""Score the per-layer texts from probe_mt_bertscore (BLEU, BERTScore, chrF,
+SQuAD/CoQA F1). Reads a run dir under Results/probe_autoreg/<ts>/; writes
+layer_scores.csv (and updates layer_avg.csv with --update-csv).
 
-Reads any run dir under Results/probe_autoreg/<ts>/ that contains:
-  - summary.json   (model, task, n_layers, bert_lang, ...)
-  - texts_pre.json (dict[layer L] -> list[str], length N)
-  - texts_ft.json  (same)
-
-Computes per-layer means of:
-  - sentence-BLEU (smoothing method1)
-  - BERTScore F1  (bert_score, lang from summary.json or env BERT_LANG)
-  - chrF (sacrebleu)                          [if --metrics includes 'chrf']
-  - SQuAD F1 (squad task only, multi-gold)    [if --metrics includes 'squad_f1']
-
-Writes layer_scores.csv (and overwrites layer_avg.csv if --update-csv).
-
-Usage:
-  python probe_qa_f1.py <run_dir>                       # score one run
-  python probe_qa_f1.py --all                           # score every run
-  python probe_qa_f1.py <run_dir> --metrics bleu        # only BLEU
-  python probe_qa_f1.py <run_dir> --metrics squad_f1    # only SQuAD F1
-  python probe_qa_f1.py <run_dir> --bert-model xlm-roberta-large
-
-Env vars (override summary.json):
-  BERT_LANG       (e.g. fr, en)
-  BERT_MODEL_TYPE (e.g. xlm-roberta-large)
+  python probe_qa_f1.py <run_dir> --metrics squad_f1   # or --all for every run
+Env: BERT_LANG, BERT_MODEL_TYPE (override summary.json).
 """
 from __future__ import annotations
 import argparse, json, os, re, string, sys
