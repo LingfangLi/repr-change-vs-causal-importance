@@ -37,8 +37,7 @@ Datasets download automatically from HuggingFace on first run (SST-2, Yelp,
 SQuAD, CoQA, KDE4, Tatoeba). CoQA F1 scoring additionally needs the official
 `coqa-dev-v1.0.json` at the `COQA_DEV_JSON` path in `probe_qa_f1.py`.
 
-The Python scripts run on any OS. `src/EAP/run_all_edges.sh` is a plain bash
-script, so run it on Linux/macOS (or WSL / Git Bash on Windows).
+Everything is plain Python (`python <script>`), so it runs on any OS.
 
 ## 1. Fine-tuning
 
@@ -56,7 +55,7 @@ paper appendix) and are not released; supply your own in that format.
 ## 3. EAP edge importance
 
 ```bash
-bash src/EAP/run_all_edges.sh <gpt2|qwen2|llama3|llama2>
+python src/EAP/run_all_edges.py <gpt2|qwen2|llama3|llama2>
 ```
 
 Writes pretrained + own-task + cross-task edge CSVs to
