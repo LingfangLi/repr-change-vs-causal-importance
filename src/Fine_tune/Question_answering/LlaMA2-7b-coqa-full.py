@@ -1,7 +1,6 @@
 import torch
 import os
 import wandb
-import numpy as np
 from datetime import datetime
 from datasets import load_dataset
 from transformers import (

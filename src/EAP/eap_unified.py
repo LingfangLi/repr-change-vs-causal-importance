@@ -1,20 +1,15 @@
 import torch
-import numpy as np
 import pandas as pd
 import os
-import sys
 import argparse
-import importlib
 from pathlib import Path
 from functools import partial
-from typing import List, Union, Optional, Tuple, Literal
 import eap
 from eap.graph import Graph
 from eap import evaluate
 from eap import attribute_mem as attribute
-# TransformerLens Imports
 from transformer_lens import HookedTransformer
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM
 from peft import PeftModel
 
 # Probability difference metric
@@ -100,8 +95,6 @@ def validate_dataset_tokenization(model, dataset, task):
         clean_ids = clean_enc['input_ids']
         corr_ids = corr_enc['input_ids']
 
-        clean_strs = model.tokenizer.batch_decode(clean_enc['input_ids'], skip_special_tokens=True)
-        corrupted_strs = model.tokenizer.batch_decode(corr_enc['input_ids'], skip_special_tokens=True)
      
         label_ids = []
         for l in label_batch:
@@ -116,7 +109,6 @@ def validate_dataset_tokenization(model, dataset, task):
 
         label_tensor = torch.tensor(label_ids).to(model.cfg.device)
 
-        #fixed_dataset.append((clean_batch, corrupted_batch, label_tensor))  ####fixed_dataset.append((clean_strs, corrupted_strs, label_tensor))
         
         clean_strs = model.tokenizer.batch_decode(clean_ids, skip_special_tokens=True)
         corrupted_strs = model.tokenizer.batch_decode(corr_ids, skip_special_tokens=True)
@@ -301,11 +293,11 @@ def main():
     parser.add_argument("--model_name", type=str, default="llama2")  
     parser.add_argument("--output_dir", type=str, default="<PROJECT_ROOT>/output/EAP_edges/old-version-finetuned/")
     
-    # Selcet mode
+    # Select mode
     parser.add_argument("--mode", type=str, default="finetuned", choices=['finetuned', 'pretrained', 'compare'])
                       
     parser.add_argument("--data_path", type=str, default='<PROJECT_ROOT>/output/corrupted_data/sst2_corrupted.csv')
-    parser.add_argument("--ft_model_path", type=str,help="Path to fientuned model directory",default="<MODEL_STORAGE>/fine-tuning-project-1/old_version_finetuned_models/llama2-sst2-fix/") #default=<MODEL_STORAGE>/fine-tuning-project-1/old_version_finetuned_models/ "<MODEL_STORAGE>/fine-tuning-project/fine_tuned_model/qwen2-0.5b-coqa-full-20251125-182058/checkpoint-4500/"
+    parser.add_argument("--ft_model_path", type=str,help="Path to finetuned model directory",default="<MODEL_STORAGE>/fine-tuning-project-1/old_version_finetuned_models/llama2-sst2-fix/") #default=<MODEL_STORAGE>/fine-tuning-project-1/old_version_finetuned_models/ "<MODEL_STORAGE>/fine-tuning-project/fine_tuned_model/qwen2-0.5b-coqa-full-20251125-182058/checkpoint-4500/"
     parser.add_argument("--base_model_name", type=str, default="meta-llama/Llama-2-7b-hf",help="HF Hub name for config/tokenizer") #"meta-llama/Llama-2-7b-hf" default="Qwen/Qwen2-0.5B"  "meta-llama/Llama-3.2-1B"
     parser.add_argument("--top_k", type=int, default=400)
     parser.add_argument("--batch_size", type=int, default=1)

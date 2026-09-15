@@ -55,7 +55,7 @@ class EAPLoader:
 
         try:
             df = pd.read_csv(csv_path)
-        except:
+        except Exception:
             return set()
 
         df['abs_score'] = df['score'].abs()

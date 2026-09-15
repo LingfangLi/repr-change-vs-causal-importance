@@ -12,7 +12,6 @@ from transformers import AutoModelForCausalLM
 from peft import PeftModel
 
 # Configuration
-logging.basicConfig(level=logging.INFO)
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 class ModelLoader:
@@ -341,7 +340,6 @@ if __name__ == "__main__":
     try:
         for model_key in model_keys:
             for task in tasks:
-                print("load models")
                 model = ModelLoader.load(model_key, is_ft, task)
                 scores = InductionDetector.get_induction_score_matrix(model)
                 InductionDetector.visualize_and_save(scores, model_key, task, is_ft)

@@ -6,7 +6,7 @@ Env: MODEL_NAME, TASK, NUM_SAMPLES, MAX_GEN_LEN (optional).
 Run:  MODEL_NAME=llama2 TASK=kde4 python probe_mt_bertscore.py
 """
 from __future__ import annotations
-import os, sys, json, gc
+import os, json, gc
 from pathlib import Path
 from datetime import datetime
 

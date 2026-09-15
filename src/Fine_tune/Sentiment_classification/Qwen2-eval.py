@@ -87,7 +87,6 @@ for sample in tqdm(dataset):
 
     # Clean and compare
     pred_text = generated_text.strip().lower()
-    print(f"Promt: ... | Pred: {pred_text} | Expect: {expected_label}")
     # Simple check: if expected label appears in prediction
     if expected_label in pred_text:
         correct_count += 1

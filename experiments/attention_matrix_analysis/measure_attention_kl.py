@@ -4,7 +4,7 @@ import pandas as pd
 from datasets import load_dataset
 from transformer_lens import HookedTransformer
 import torch
-from typing import Dict, List, Tuple, Optional, Any
+from typing import Dict, List
 from tqdm import tqdm
 import logging
 import gc
@@ -29,15 +29,7 @@ class UserConfig:
     MODEL_ROOT_DIR = rf"{MODEL_STORAGE}/fine-tuning-project/fine_tuned_model/"
     OUTPUT_DIR = rf"{PROJECT_ROOT}/experiments/attention_matrix_analysis/attention_analysis_results/"
 
-    # =====================================================================
     # Fine-tuned model folder mapping
-    # =====================================================================
-    # Small models (gpt2/llama3/qwen2) and llama2_full_ft use new SFT
-    # checkpoints under fine_tuned_model/.
-    # llama2 QLoRA uses the r=64 OLD adapters under old_fine_tuned_model/
-    # (kept for consistency with Jan 2026 EAP/attention results; the Nov 2025
-    # r=16 qlora adapters exist but are not used for the paper).
-    # =====================================================================
     FT_MODEL_MAP = {
         "gpt2": {
             "sentiment_yelp": "gpt2-small-yelp-full-ft-20260415-232443",
@@ -297,8 +289,6 @@ class DataLoader:
 
         ds_name, ds_cfg = task_cfg["dataset"]
         if ds_cfg:
-            # Use clean positional config name ("en-fr"); a cache symlink points to the
-            # old kwargs-baked cache dir so we don't need to re-download.
             ds = load_dataset(ds_name, f"{ds_cfg[0]}-{ds_cfg[1]}", split=task_cfg["split"])
         else:
             ds = load_dataset(ds_name, split=task_cfg["split"])

@@ -111,9 +111,6 @@ for i in tqdm(range(0, len(dataset), BATCH_SIZE)):
     for pred_text, ref_text in zip(decoded_preds, batch_ref):
         clean_pred = pred_text.strip().split('\n')[0]
         
-        if i != 0: 
-            print(f"\n[Debug Sample]\nRef: {ref_text}\nPred: {clean_pred}\n")
-            i = -1 # prevent spamming
 
         ref_tokens = [ref_text.split()]
         pred_tokens = clean_pred.split()

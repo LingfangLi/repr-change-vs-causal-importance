@@ -9,7 +9,7 @@ import string
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 
 # 1. Configuration
-MODEL_PATH = "<MODEL_STORAGE>/fine-tuning-project/fine_tuned_model/llama3.2-1b-SQUAD-full-ft-20260106-222423/checkpoint-5202/"
+MODEL_PATH = "<MODEL_STORAGE>/fine-tuning-project/fine_tuned_model/llama3.2-1b-COQA-full-ft-20260105-230514/"
 NUM_SAMPLES = 1000
 MAX_LENGTH = 1024
 
@@ -40,7 +40,7 @@ def compute_exact_match(prediction, truth):
     return int(normalize_text(prediction) == normalize_text(truth))
 
 # 3. Model Loading
-print(f"Loading GPT-2 CoQA model from: {MODEL_PATH}")
+print(f"Loading Llama-3.2 CoQA model from: {MODEL_PATH}")
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_PATH,
     device_map="auto",
@@ -123,7 +123,7 @@ for sample in tqdm(test_samples):
     bleu_scores.append(sentence_bleu([gold_answer.split()], pred_text.split(), smoothing_function=smoothing))
 
 print("\n" + "=" * 30)
-print(f"GPT-2 CoQA RESULTS (N={len(test_samples)})")
+print(f"Llama-3.2 CoQA RESULTS (N={len(test_samples)})")
 print(f"EM:   {np.mean(em_scores)*100:.2f}%")
 print(f"F1:   {np.mean(f1_scores)*100:.2f}%")
 print(f"BLEU: {np.mean(bleu_scores):.4f}")

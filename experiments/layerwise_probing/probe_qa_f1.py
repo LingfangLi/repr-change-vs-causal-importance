@@ -6,7 +6,7 @@ layer_scores.csv (and updates layer_avg.csv with --update-csv).
 Env: BERT_LANG, BERT_MODEL_TYPE (override summary.json).
 """
 from __future__ import annotations
-import argparse, json, os, re, string, sys
+import argparse, json, os, re, string
 from collections import Counter
 from pathlib import Path
 

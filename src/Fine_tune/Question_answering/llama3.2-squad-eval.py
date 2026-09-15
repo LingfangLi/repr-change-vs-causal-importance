@@ -99,7 +99,7 @@ for sample in tqdm(raw_dataset):
     bleu_scores.append(sample_bleu)
 
 print("\n" + "=" * 30)
-print(f"GPT-2 SQuAD RESULTS (N={len(raw_dataset)})")
+print(f"Llama-3.2 SQuAD RESULTS (N={len(raw_dataset)})")
 print(f"EM:   {np.mean(em_scores)*100:.2f}%")
 print(f"F1:   {np.mean(f1_scores)*100:.2f}%")
 print(f"BLEU: {np.mean(bleu_scores):.4f}")
