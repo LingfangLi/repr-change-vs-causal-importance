@@ -50,7 +50,7 @@ Full-parameter SFT (`trl.SFTTrainer`), one checkpoint per (model, task):
 
 EAP reads a corrupted (counter-example) version of each task's inputs from
 `output/corrupted_data/<task>_corrupted.csv` (columns `clean`, `corrupted`,
-`label`); supply your own.
+`label`); supply your own, generated as described in the paper appendix.
 
 ## 3. EAP edge importance
 
