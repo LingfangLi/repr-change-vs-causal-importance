@@ -8,17 +8,8 @@ fine-tuned circuit).
 Formula:  Perf-Delta = (FT - Base) * 100, expressed as percentage points.
           All underlying metrics (Accuracy, F1, BLEU) live in [0, 1].
 
-Data sources per model:
-  - GPT-2 Small, Llama-3.2-1B:  old_raw_data_gpt2_llama3.csv for
-    yelp/squad/coqa/kde4/tatoeba (rows AND columns); new full-FT
-    matrix (gpt2_/llama3_matrix_results_full.csv) only for the SST-2
-    row and SST-2 column (the old runs used Twitter, not SST-2).
-  - Qwen2-0.5B:               qwen_matrix_results.csv (old, already has SST-2)
-  - Llama-2-7B:               llama2_matrix_results.csv (QLoRA version,
-    which is what the original paper reported)
-
-Overlap values come from the top-400 EAP edge overlap file and use the
-QLoRA row for Llama-2.
+Reads one performance matrix per model (<model>_perf_matrix.csv) and the
+top-400 EAP overlap from crosstask_overlap_combined.csv.
 """
 from __future__ import annotations
 
@@ -74,76 +65,16 @@ def _read_matrix_csv(csv_path: Path) -> dict:
     return out
 
 
-def _read_old_raw(model_key: str) -> dict:
-    """Load old raw-data CSV and return perf[source][eval] = {metric: value}.
-    Skips comment lines."""
-    out: dict = defaultdict(dict)
-    path = CROSS_EVAL_DIR / "old_raw_data_gpt2_llama3.csv"
-    with path.open() as f:
-        for line in f:
-            if line.startswith("#") or line.startswith("Model,"):
-                continue
-            parts = [p.strip() for p in line.rstrip("\n").split(",")]
-            if len(parts) < 7:
-                continue
-            m, src, evl, acc, f1, em, bleu = parts
-            if m != model_key:
-                continue
-            cell: dict = {}
-            for name, val in [("Accuracy", acc), ("F1", f1),
-                              ("EM", em), ("BLEU", bleu)]:
-                if val == "":
-                    continue
-                try:
-                    cell[name] = float(val)
-                except ValueError:
-                    continue
-            if cell:
-                out[src][evl] = cell
-    return out
+_PERF_FILE = {
+    "gpt2":     "gpt2_perf_matrix.csv",
+    "llama3.2": "llama3_perf_matrix.csv",
+    "qwen2":    "qwen2_perf_matrix.csv",
+    "llama2":   "llama2_perf_matrix.csv",
+}
 
 
 def load_perf(model_key: str) -> dict:
-    """Per-model perf dict with the documented source-data mix."""
-    if model_key == "gpt2":
-        old = _read_old_raw("gpt2")
-        new = _read_matrix_csv(CROSS_EVAL_DIR / "gpt2_matrix_results_full.csv")
-        return _merge_old_new(old, new)
-    if model_key == "llama3.2":
-        old = _read_old_raw("llama3.2")
-        new = _read_matrix_csv(CROSS_EVAL_DIR / "llama3_matrix_results_full.csv")
-        return _merge_old_new(old, new)
-    if model_key == "qwen2":
-        return _read_matrix_csv(CROSS_EVAL_DIR / "qwen_matrix_results.csv")
-    if model_key == "llama2":
-        return _read_matrix_csv(CROSS_EVAL_DIR / "llama2_matrix_results.csv")
-    raise KeyError(model_key)
-
-
-def _merge_old_new(old: dict, new: dict) -> dict:
-    """For GPT-2 / Llama-3.2: keep old for tasks != sst2, use new for the
-    sst2 row (eval_task == sst2 for any source) and sst2 column (source
-    == sst2 for any eval). Twitter is dropped."""
-    merged: defaultdict = defaultdict(dict)
-    # Copy old for non-sst2 source AND non-sst2 eval task, but keep base
-    for src, by_evl in old.items():
-        if src == "twitter":
-            continue
-        for evl, cell in by_evl.items():
-            if evl == "twitter":
-                continue
-            merged[src][evl] = cell
-    # Overlay new data for sst2 row and sst2 column (+ Base_Model refreshed
-    # for sst2 eval)
-    for src, by_evl in new.items():
-        if src not in ("Base_Model", "sst2", "yelp", "squad",
-                       "coqa", "kde4", "tatoeba"):
-            continue
-        for evl, cell in by_evl.items():
-            if evl != "sst2" and src != "sst2":
-                continue
-            merged[src][evl] = cell
-    return dict(merged)
+    return _read_matrix_csv(CROSS_EVAL_DIR / _PERF_FILE[model_key])
 
 
 perf_by_model = {mkey: load_perf(mkey) for mkey, _disp, _ovk in MODELS}

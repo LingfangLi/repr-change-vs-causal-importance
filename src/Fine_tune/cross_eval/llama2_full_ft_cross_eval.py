@@ -10,7 +10,7 @@ Metric per task:
   squad / coqa          → F1, EM
   kde4 / tatoeba        → BLEU
 
-Writes: llama2_full_ft_matrix_results.csv
+Writes: llama2_perf_matrix.csv
 """
 import os
 import re
@@ -55,7 +55,7 @@ EVAL_CONFIG = {
     "dtype": torch.float16,
 }
 
-OUT_CSV = os.path.join(os.path.dirname(__file__), "llama2_full_ft_matrix_results.csv")
+OUT_CSV = os.path.join(os.path.dirname(__file__), "llama2_perf_matrix.csv")
 
 
 # ==================== Metrics ====================

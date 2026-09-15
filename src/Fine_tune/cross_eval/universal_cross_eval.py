@@ -252,7 +252,7 @@ def run_matrix():
     print("="*50)
     print(df)
     
-    csv_filename = "qwen_matrix_results.csv"
+    csv_filename = "qwen2_perf_matrix.csv"
     df.to_csv(csv_filename, index=False)
     print(f"\nSaved to {csv_filename}")
 

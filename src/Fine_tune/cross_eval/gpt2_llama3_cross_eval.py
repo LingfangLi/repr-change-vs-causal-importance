@@ -2,7 +2,7 @@
 Cross-task evaluation matrix for GPT-2 Small and Llama-3.2-1B (full FT).
 
 Runs each 6 FT checkpoints + base model on all 6 tasks (6 * (6+1) = 42 eval runs
-per model). Writes gpt2_matrix_results_full.csv and llama3_matrix_results_full.csv.
+per model). Writes gpt2_perf_matrix.csv and llama3_perf_matrix.csv.
 """
 import os
 import re
@@ -67,19 +67,19 @@ MODEL_CONFIGS = {
         "base_model_name": "gpt2",
         "ft_path_patterns": ["gpt2-small-*full*ft*", "gpt2-sst2-full-ft-*", "gpt2-yelp*full*ft*"],
         "dtype": torch.float32,
-        "out_csv": f"{PROJECT_ROOT}/src/Fine_tune/cross_eval/gpt2_matrix_results_full.csv",
+        "out_csv": f"{PROJECT_ROOT}/src/Fine_tune/cross_eval/gpt2_perf_matrix.csv",
     },
     "llama3.2": {
         "base_model_name": "meta-llama/Llama-3.2-1B",
         "ft_path_patterns": ["llama3.2-1b-*full*", "llama3.2-1b-sst2-full-*", "llama3.2-1b-yelp*full*ft*"],
         "dtype": torch.float16,
-        "out_csv": f"{PROJECT_ROOT}/src/Fine_tune/cross_eval/llama3_matrix_results_full.csv",
+        "out_csv": f"{PROJECT_ROOT}/src/Fine_tune/cross_eval/llama3_perf_matrix.csv",
     },
     "qwen2": {
         "base_model_name": "Qwen/Qwen2-0.5B",
         "ft_path_patterns": ["qwen2-0.5b-*full*", "qwen2-kde4-tech-trans-full-*", "qwen2-0.5b-tatoeba-en-fr-*"],
         "dtype": torch.bfloat16,
-        "out_csv": f"{PROJECT_ROOT}/src/Fine_tune/cross_eval/qwen2_matrix_results_full.csv",
+        "out_csv": f"{PROJECT_ROOT}/src/Fine_tune/cross_eval/qwen2_perf_matrix.csv",
     },
 }
 

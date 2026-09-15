@@ -37,6 +37,10 @@ Datasets download automatically from HuggingFace on first run (SST-2, Yelp,
 SQuAD, CoQA, KDE4, Tatoeba). CoQA F1 scoring additionally needs the official
 `coqa-dev-v1.0.json` at the `COQA_DEV_JSON` path in `probe_qa_f1.py`.
 
+Everything runs as `python <script>` (Linux/macOS). `src/EAP/run_all_edges.sh`
+is a bash convenience wrapper; any SLURM `#SBATCH` headers are examples to adapt
+to your scheduler.
+
 ## 1. Fine-tuning
 
 Full-parameter SFT (`trl.SFTTrainer`), one checkpoint per (model, task):
