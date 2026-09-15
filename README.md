@@ -10,6 +10,7 @@ representations (attention-map KL, logit-lens probing) against which components
 are *causally* important for the task (Edge Attribution Patching). The two are
 largely decoupled: the layers that change most are not the ones that matter most.
 
+<!-- Citation (uncomment once the ACL Anthology entry is out; add volume/pages)
 ## Citation
 
 ```bibtex
@@ -20,6 +21,8 @@ largely decoupled: the layers that change most are not the ones that matter most
   year      = {2026},
 }
 ```
+-->
+
 
 ## Environment
 
