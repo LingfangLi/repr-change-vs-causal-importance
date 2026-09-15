@@ -33,6 +33,11 @@ pip install -r requirements.txt
 Set the path placeholders (`<PROJECT_ROOT>`, `<DATA_ROOT>`, `<MODEL_STORAGE>`)
 in the scripts to your own before running.
 
+Datasets download automatically from HuggingFace on first run (SST-2, Yelp,
+SQuAD, CoQA, KDE4, Tatoeba). Two exceptions: the corrupted inputs are generated
+by `src/find_corrupt_data/`, and CoQA F1 scoring needs the official
+`coqa-dev-v1.0.json` at the `COQA_DEV_JSON` path in `probe_qa_f1.py`.
+
 ## 1. Fine-tuning
 
 Full-parameter SFT (`trl.SFTTrainer`), one checkpoint per (model, task):
