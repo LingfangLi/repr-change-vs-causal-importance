@@ -88,11 +88,7 @@ tokenizer.pad_token = tokenizer.eos_token
 
 # 4. Data Preparation
 print("Preparing dataset...")
-raw_dataset = load_dataset('squad', split='train').select(range(20000,30000))
-
-# Same seed as training ensures the test split contains unseen data
-dataset_dict = raw_dataset.train_test_split(test_size=0.1, seed=42)
-eval_dataset = dataset_dict['test'].select(range(NUM_SAMPLES))
+eval_dataset = load_dataset('squad', split='validation').select(range(NUM_SAMPLES))
 
 print(f"Evaluating on {len(eval_dataset)} unseen samples.")
 
